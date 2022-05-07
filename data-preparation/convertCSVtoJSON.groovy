@@ -47,28 +47,10 @@ while (row != null) {
 	count++
 
 	row = new ArrayList<String>(Arrays.asList(row));
-//	System.err.println(row);
-	
-	/*for (int i = row.size()-1 ; i >= 0 ; --i) {
-		System.out.println(i);
-		value = row.get(i);
-		if (Character.isDigit(value.charAt(0))) {
-          try {
-              Float floatValue = Float.valueOf(value.split("\\s")[0]);
-              row.add(i+1,floatValue.toString())
-              }
-          catch (Exception e) {
-          	//ignore this
-          }
-       }
-	}*/
 	
 	Map data = new LinkedHashMap();
 	
 	for (int i = 0 ; i < row.size() ; ++i) {
-//		System.err.println(i);
-	
-	
 		String key = headers[i];
 		String rawValue = row[i];
 		
@@ -136,19 +118,11 @@ while (row != null) {
 		data.put("suitable_for","vegetarians");
 	else
 		data.put("suitable_for","omnivores");
-		
-//	System.err.println(data);
-		
+
 	objectMapper.writeValue(jsonG, data);
-	
-//	System.err.println("json written");
-	
+
 	row = csvReader.readNext();
 
-	//System.err.println(count);
 }
-
-//System.err.println(finished);
-
 }}
 
