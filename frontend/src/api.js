@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export default function CloudAPI() {
+export default function API() {
 
-    const process = async (url) => {
-        let json = await axios.get("./process?url="+url)
+    const getOverview = async (url) => {
+        let json = await axios.get("./overview");
 
         // TODO add error handling
 
@@ -11,6 +11,6 @@ export default function CloudAPI() {
     }
 
     return {
-        process
+        getOverview
     }
 }

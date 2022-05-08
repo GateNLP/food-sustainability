@@ -1,16 +1,25 @@
 import { all, fork, takeLatest, select, call, put } from 'redux-saga/effects';
 
-import { setError, setResponse }  from "./actions";
+import { setIndexOverview }  from "./actions";
 
-import CloudAPI from "./api";
+import API from "./api";
 
 
-const cloudAPI = CloudAPI()
+const api = API()
 
 function* watchInputURL() {
-    yield takeLatest(["SET_INPUT_URL"], handleInputURL)
+    yield takeLatest(["GET_INDEX_OVERVIEW"], handleGetIndexOverview)
 }
 
+
+function* handleGetIndexOverview(action) {
+    let overview = yield call(api.getOverview);
+
+    yield put(setIndexOverview(overview));
+
+}
+
+/*
 function* handleInputURL(action) {
 
     const url = yield select(state => state.url)
@@ -29,9 +38,9 @@ function* handleInputURL(action) {
 
     yield put(setResponse(response.result.Result[0]))
 }
-
+*/
 export default function* rootSaga() {
     yield all([
-       fork(watchInputURL),
+        fork(watchInputURL),
     ]);
 }

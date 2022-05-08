@@ -1,15 +1,13 @@
 const defaultState = {
-    url: undefined,
-    loading : false,
-    error: undefined
+    overview: undefined,
 };
 
 const reducer = (state = defaultState, action) => {
     switch (action.type) {
-        case 'SET_INPUT_URL':
+
+        case 'GET_INDEX_OVERVIEW':
             state = defaultState;
-        case 'SET_ERROR_MESSAGE':
-        case 'SET_RESPONSE':
+        case 'SET_INDEX_OVERVIEW':
             return { ...state, ...action.payload };
         default:
             return state;
