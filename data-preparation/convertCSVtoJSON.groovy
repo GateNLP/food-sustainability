@@ -119,6 +119,10 @@ while (row != null) {
 	else
 		data.put("suitable_for","omnivores");
 
+	data.remove("mimetype");
+	data.remove("gate.sourceurl");
+	data.remove("docnewlinetype");
+
 	objectMapper.writeValue(jsonG, data);
 
 	row = csvReader.readNext();

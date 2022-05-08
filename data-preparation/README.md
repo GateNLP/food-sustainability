@@ -31,6 +31,11 @@ If a cell has the value of either `Yes` or `No` then these are converted to
 the appropriate boolean so again they are represented not as strings in the
 final JSON we index
 
+## Null
+
+If the cell is `(null)` then we simply don't add anything to the JSON as the
+lack of a field will count as null in the index.
+
 ## Source
 
 In the original TSV file the are boolean columns for the main sources. Whilst
@@ -56,4 +61,8 @@ For fields where we manipulate the original value in some way, we also store
 the original in the field `<header>_raw`. And for those fields we don't need
 to modify they just end up as `<header>`.
 
+## Other things we should do
 
+1. remove amounts (if possible) from the ingredients list
+
+2. keep only the number in the serves column. Also why is this a list?	
