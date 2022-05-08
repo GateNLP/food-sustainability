@@ -111,13 +111,23 @@ while (row != null) {
 		data.put("source","allrecipes");
 	else
 		data.put("source", "Other");
-		
-	if (data.get("veganrecipe"))
-		data.put("suitable_for","vegans");
+
+
+	List<String> suitableFor = new ArrayList<String>();
+	suitableFor.add("everyone");
+
+	if (data.get("veganrecipe")) {
+		//data.put("suitable_for","vegans");
+		suitableFor.add("vegans");
+		suitableFor.add("vegetarians");
+	}
 	else if (data.get("vegetarianrecipe"))
-		data.put("suitable_for","vegetarians");
-	else
-		data.put("suitable_for","omnivores");
+		suitableFor.add("vegetarians");
+
+	data.put("suitable_for",suitableFor);
+		//data.put("suitable_for","vegetarians");
+//	else
+//		data.put("suitable_for","omnivores");
 
 	data.remove("mimetype");
 	data.remove("gate.sourceurl");
