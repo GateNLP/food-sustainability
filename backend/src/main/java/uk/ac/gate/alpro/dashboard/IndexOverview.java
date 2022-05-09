@@ -13,13 +13,17 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
 import org.elasticsearch.search.aggregations.bucket.ParsedSingleBucketAggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
+import org.elasticsearch.search.aggregations.metrics.ParsedPercentiles;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +67,14 @@ public class IndexOverview {
 
       sourceBuilder.aggregation(AggregationBuilders.terms("suitableFor").field("suitable_for.keyword"));
 
+      sourceBuilder.aggregation(AggregationBuilders.terms("ghge_source").field("source.keyword")
+            .order(BucketOrder.aggregation("median", "50", false))
+            .subAggregation(AggregationBuilders.percentiles("median").field("totalghge/portion").percentiles(50)));
+
+      sourceBuilder.aggregation(AggregationBuilders.terms("ghge_suitable_for").field("suitable_for.keyword")
+            .order(BucketOrder.aggregation("median", "50", false))
+            .subAggregation(AggregationBuilders.percentiles("median").field("totalghge/portion").percentiles(50)));
+
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
 
@@ -71,9 +83,27 @@ public class IndexOverview {
 
       result.put("total", searchResponse.getHits().getTotalHits().value);
       result.put("sources", aggregationToMap(searchResponse.getAggregations().get("sources")));
-      result.put("suitable_for", buildSuitableForData(aggregationToMap(searchResponse.getAggregations().get("suitableFor"))));
+      result.put("suitable_for",
+            buildSuitableForData(aggregationToMap(searchResponse.getAggregations().get("suitableFor"))));
+
+      result.put("ghge_sources", medianAggregationToMap(searchResponse.getAggregations().get("ghge_source")));
+      result.put("ghge_suitable_for",
+            medianAggregationToMap(searchResponse.getAggregations().get("ghge_suitable_for")));
 
       return result;
+   }
+
+   public static Map<String, Double> medianAggregationToMap(Aggregation a) {
+      Map<String, Double> result = new LinkedHashMap<String, Double>();
+
+      ((MultiBucketsAggregation) a).getBuckets().forEach(b -> {
+         ParsedPercentiles median = (ParsedPercentiles) b.getAggregations().get("median");
+
+         result.put(b.getKeyAsString(), median.iterator().next().getValue());
+      });
+
+      return result;
+
    }
 
    public static Map<String, Long> aggregationToMap(Aggregation a, String... levels) {
