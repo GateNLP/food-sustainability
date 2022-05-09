@@ -20,13 +20,15 @@ import Paper from '@material-ui/core/Paper';
 
 import Typography from "@material-ui/core/Typography";
 
-/*import SVGDownload from './SVGDownload'
+import SVGDownload from './SVGDownload'
 import CSVDownload, {
     convertDistToCsv,
     convertObjToCsv,
-} from "./CSVDownload";*/
+} from "./CSVDownload";
 
 const Plot = createPlotlyComponent(Plotly);
+
+//#6cbb31
 
 const IndexOverview = (props) => {
 
@@ -49,11 +51,15 @@ const IndexOverview = (props) => {
             alignItems="flex-start">
 
             <Grid item xs={12}>
-                <Typography variant="body1">Index contains {overview.total.toLocaleString()} recipes.</Typography>
-            </Grid >
+                <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Recipes within the index came from the following sources
+                    <SVGDownload id="sources" filename="recipe-sources.svg" />
+                    <SVGDownload id="sources" type="PNG" filename="recipe-sources.png" />
+                    <CSVDownload filename="recipe-sources" method={convertObjToCsv(overview.sources, ["source", "count"])} />
+                </Typography>
+            </Grid>
 
             <Grid item xs={6}>
-                <Plot divId="sources" style={{ width: "100%" }} data={[recipeSources]} layout={{ margin: { t: 10, b: 10 }, autosize: true, barmode: "group", xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: false, 'displayModeBar': false }} />
+                <Plot divId="sources" style={{ width: "100%" }} data={[recipeSources]} layout={{ showlegend: true, margin: { t: 10, b: 10 }, autosize: true, barmode: "group", xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: false, 'displayModeBar': false }} />
             </Grid>
 
             <Grid item xs={6}>

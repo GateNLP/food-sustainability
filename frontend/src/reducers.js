@@ -1,5 +1,5 @@
 const defaultState = {
-    overview: undefined,
+    overview: null,
 };
 
 const reducer = (state = defaultState, action) => {

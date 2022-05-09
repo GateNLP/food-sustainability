@@ -60,6 +60,8 @@ public class IndexOverview {
       
       sourceBuilder.aggregation(AggregationBuilders.terms("sources").field("source.keyword"));
       
+      sourceBuilder.aggregation(AggregationBuilders.terms("suitableFor").field("suitable_for.keyword"));
+      
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
 
@@ -68,6 +70,7 @@ public class IndexOverview {
 
       result.put("total", searchResponse.getHits().getTotalHits().value);
       result.put("sources", aggregationToMap(searchResponse.getAggregations().get("sources")));
+      result.put("suitable_for", aggregationToMap(searchResponse.getAggregations().get("suitableFor")));
       
       return result;
    }
