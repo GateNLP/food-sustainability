@@ -27,7 +27,7 @@ import { createTheme } from "@material-ui/core/styles";
 
 import { ReactComponent as UoSLogo } from "./images/UoS_Crest.svg"
 import { ReactComponent as CityUoLLogo } from "./images/city-uol-logo.svg"
-import { ReactComponent as DashboardLogo } from "./images/Tomato.svg"
+import { ReactComponent as DashboardLogo } from "./images/Nature.svg"
 
 const theme = createTheme({
   palette: {
@@ -71,7 +71,7 @@ function App() {
           direction="row"
           alignItems="center"
         >
-          <Typography variant="h4" color={'primary'} style={{ flex: 1 }}>
+          <Typography variant="h3" color={'primary'} style={{ flex: 1 }}>
             <DashboardLogo style={{ height: "1.5em", verticalAlign: "middle", paddingRight: "1ex" }} />
             Food Sustainability Dashboard
           </Typography>
@@ -85,13 +85,14 @@ function App() {
           <LinearProgress />
           :
           <React.Fragment>
-            <Typography variant="body1">Index contains {overview.total.toLocaleString()} recipes.</Typography>
-
+            <Typography variant="h4">Currently summarizing {overview.total.toLocaleString()} recipes.</Typography>
+            <Box mt={6}/>
             <IndexOverview />
           </React.Fragment>
         }
         <Box mt={6} style={{ textAlign: "center" }}>
-          <Typography variant="overline">This tool has been developed with a <Link href="https://www.alprofoundation.org/project/communicating-the-environmental-impact-of-plant-based-recipes/" target="_blank">research grant</Link> from the <Link href="https://www.alprofoundation.org/" target="_blank">Alpro Foundation</Link></Typography>
+          <Typography variant="overline" paragraph>This tool has been developed with a <Link href="https://www.alprofoundation.org/project/communicating-the-environmental-impact-of-plant-based-recipes/" target="_blank">research grant</Link> from the <Link href="https://www.alprofoundation.org/" target="_blank">Alpro Foundation</Link></Typography>
+          <Typography variant="overline">Logo By <Link href="https://commons.wikimedia.org/w/index.php?curid=10574216">DarKobra</Link> - DeviantArt, CC BY-SA 3.0</Typography>
         </Box>
       </Container>
     </MuiThemeProvider>
