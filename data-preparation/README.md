@@ -49,11 +49,10 @@ if all of the columns are false then we assign the source as `Other`.
 ## Suitable For
 
 In a similar way to the sources, there two columns showing if a recipe is
-suitable for vegans or vegetarians. We use these to a set a column, which
-we call, `suitable_for` to either `vegans`, `vegetarians`, or `omnivores`.
-Obviously if it's suitable for vegans then it's also suitable for both
-vergetarians and omnivores so we'll need to think about how to display
-the numbers, but this way we can aggregate on a single field.
+suitable for vegans or vegetarians. To make the aggregations easier we use
+these to populate a single `suitable_for` field. This field is actually a
+list, into which we always put `everyone` and then add `vegetarians` or
+`vegans` based on the values of the individual columns.
 
 ## Raw Values
 

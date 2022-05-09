@@ -24,6 +24,7 @@ import SVGDownload from './SVGDownload'
 import CSVDownload, {
     convertDistToCsv,
     convertObjToCsv,
+    convertSunburstToCsv
 } from "./CSVDownload";
 
 const Plot = createPlotlyComponent(Plotly);
@@ -42,47 +43,89 @@ const IndexOverview = (props) => {
         sort: false
     };
 
+    const suitableFor = {
+        name: "",
+        type: "sunburst",
+        hoverinfo: "label+value+percent parent+percent root",
+        hovertemplate: "%{label}<br>%{value}<br>%{percentParent:.2%} of %{parent}<br>%{percentRoot:.2%} of %{root}",
+        ids: overview.suitable_for.ids,
+        labels: overview.suitable_for.labels,
+        values: overview.suitable_for.values,
+        parents: overview.suitable_for.parents,
+        sort: false,
+        branchvalues: "total",
+        //leaf: { opacity: 1},
+        //textfont: { color: "black" },
+        marker: { colorscale: "Viridis"},
+        root: {
+            color: "green"
+        }
+    }
+
     return (
+        <React.Fragment>
+            <Grid component={Paper}
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
 
-        <Grid component={Paper}
-            container
-            direction="row"
-            spacing={3}
-            alignItems="flex-start">
+                <Grid item xs={12}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Recipes within the index came from the following sources
+                        <SVGDownload id="sources" filename="recipe-sources.svg" />
+                        <SVGDownload id="sources" type="PNG" filename="recipe-sources.png" />
+                        <CSVDownload filename="recipe-sources" method={convertObjToCsv(overview.sources, ["source", "count"])} />
+                    </Typography>
+                </Grid>
 
-            <Grid item xs={12}>
-                <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Recipes within the index came from the following sources
-                    <SVGDownload id="sources" filename="recipe-sources.svg" />
-                    <SVGDownload id="sources" type="PNG" filename="recipe-sources.png" />
-                    <CSVDownload filename="recipe-sources" method={convertObjToCsv(overview.sources, ["source", "count"])} />
-                </Typography>
-            </Grid>
+                <Grid item xs={6}>
+                    <Plot divId="sources" style={{ width: "100%" }} data={[recipeSources]} layout={{ showlegend: true, margin: { t: 10, b: 10 }, autosize: true, barmode: "group", xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: false, 'displayModeBar': false }} />
+                </Grid>
 
-            <Grid item xs={6}>
-                <Plot divId="sources" style={{ width: "100%" }} data={[recipeSources]} layout={{ showlegend: true, margin: { t: 10, b: 10 }, autosize: true, barmode: "group", xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: false, 'displayModeBar': false }} />
-            </Grid>
-
-            <Grid item xs={6}>
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Source</TableCell>
-                                <TableCell>Recipes (%)</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {recipeSources.labels.map((source, key) => (
-                                <TableRow key={key}>
-                                    <TableCell>{source}</TableCell>
-                                    <TableCell>{recipeSources.values[key].toLocaleString()} ({(100 * recipeSources.values[key] / overview.total).toFixed(2)}%)</TableCell>
+                <Grid item xs={6}>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Source</TableCell>
+                                    <TableCell>Recipes (%)</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {recipeSources.labels.map((source, key) => (
+                                    <TableRow key={key}>
+                                        <TableCell>{source}</TableCell>
+                                        <TableCell>{recipeSources.values[key].toLocaleString()} ({(100 * recipeSources.values[key] / overview.total).toFixed(2)}%)</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </Grid >
+
+            <Grid component={Paper}
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
+
+                <Grid item xs={12}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Recipes are suitable for...
+                        <SVGDownload id="suitable-for" filename="suitable-for.svg" />
+                        <SVGDownload id="suitable-for" filename="suitable-for" type="PNG" />
+                        <CSVDownload filename="suitable-for" method={convertSunburstToCsv(overview.suitable_for, ["suitable for", "subtype of", "count"])} />
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={6} >
+                    <Plot divId="suitable-for" style={{ width: "100%" }} data={[suitableFor]} layout={{ margin: { t: 10, b: 20, l: 5, r: 5 }, autosize: true }} config={{ responsive: true, 'displayModeBar': false, showEditInChartStudio: true, plotlyServerURL: "https://chart-studio.plotly.com" }} />
+                </Grid>
+
             </Grid>
-        </Grid >
+        </React.Fragment>
+
     )
 }
 

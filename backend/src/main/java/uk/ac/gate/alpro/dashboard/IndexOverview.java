@@ -1,6 +1,8 @@
 package uk.ac.gate.alpro.dashboard;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
@@ -52,16 +54,15 @@ public class IndexOverview {
       Map<String, Object> result = new LinkedHashMap<String, Object>();
 
       SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-      
+
       sourceBuilder.trackTotalHits(true);
-      
+
       sourceBuilder.query(QueryBuilders.matchAllQuery());
-      
-      
+
       sourceBuilder.aggregation(AggregationBuilders.terms("sources").field("source.keyword"));
-      
+
       sourceBuilder.aggregation(AggregationBuilders.terms("suitableFor").field("suitable_for.keyword"));
-      
+
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
 
@@ -70,11 +71,11 @@ public class IndexOverview {
 
       result.put("total", searchResponse.getHits().getTotalHits().value);
       result.put("sources", aggregationToMap(searchResponse.getAggregations().get("sources")));
-      result.put("suitable_for", aggregationToMap(searchResponse.getAggregations().get("suitableFor")));
-      
+      result.put("suitable_for", buildSuitableForData(aggregationToMap(searchResponse.getAggregations().get("suitableFor"))));
+
       return result;
    }
-   
+
    public static Map<String, Long> aggregationToMap(Aggregation a, String... levels) {
 
       Map<String, Long> result = new LinkedHashMap<String, Long>();
@@ -98,5 +99,36 @@ public class IndexOverview {
       });
 
       return result;
+   }
+
+   private static Map<String, List> buildSuitableForData(Map<String, Long> types) {
+      List<String> ids = new ArrayList<String>();
+      List<String> labels = new ArrayList<String>();
+      List<Long> values = new ArrayList<Long>();
+      List<String> parents = new ArrayList<String>();
+
+      ids.add("everyone");
+      labels.add("everyone");
+      values.add(types.getOrDefault("everyone", 0L));
+      parents.add("");
+
+      ids.add("vegetarians");
+      labels.add("vegetarians");
+      values.add(types.getOrDefault("vegetarians", 0L));
+      parents.add("everyone");
+
+      ids.add("vegans");
+      labels.add("vegans");
+      values.add(types.getOrDefault("vegans", 0L));
+      parents.add("vegetarians");
+
+      Map<String, List> data = new LinkedHashMap<String, List>();
+
+      data.put("ids", ids);
+      data.put("labels", labels);
+      data.put("values", values);
+      data.put("parents", parents);
+
+      return data;
    }
 }
