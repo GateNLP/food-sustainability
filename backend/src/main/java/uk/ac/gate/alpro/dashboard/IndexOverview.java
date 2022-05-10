@@ -84,7 +84,7 @@ public class IndexOverview {
          sourceBuilder.query(QueryBuilders.matchAllQuery());
       }
       else {
-         sourceBuilder.query(QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.OR));
+         sourceBuilder.query(QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
 
       sourceBuilder.aggregation(AggregationBuilders.terms("sources").field("source.keyword"));
