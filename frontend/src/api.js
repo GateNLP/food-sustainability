@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default function API() {
 
-    const getOverview = async (url) => {
-        let json = await axios.get("./overview");
+    const getOverview = async (query) => {
+        let json = await axios.get("./overview?query="+encodeURIComponent(query));
 
         // TODO add error handling
 

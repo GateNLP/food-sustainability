@@ -13,7 +13,7 @@ function* watchInputURL() {
 
 
 function* handleGetIndexOverview(action) {
-    let overview = yield call(api.getOverview);
+    let overview = yield call(api.getOverview,action.payload.query);
 
     yield put(setIndexOverview(overview));
 

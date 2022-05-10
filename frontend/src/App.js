@@ -1,3 +1,5 @@
+import React, { useRef, useState, useEffect } from "react";
+
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -18,10 +20,8 @@ import { getIndexOverview } from "./actions";
 
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-import Alert from '@material-ui/lab/Alert';
-
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState } from "react";
+
 
 import IndexOverview from './widgets/IndexOverview';
 import IndicatorOverview from './widgets/IndicatorOverview';
@@ -59,15 +59,32 @@ function App() {
     setValue(newValue);
   };
 
+
   const dispatch = useDispatch();
 
-  const overview = useSelector(state => state.overview);
+  var overview = useSelector(state => state.overview);
+  const query = useSelector(state => state.query);
 
-  if (overview === null || overview === undefined) {
+
+  if (query == null && (overview === null || overview === undefined)) {
     dispatch(getIndexOverview())
   }
 
+  const dashboardQuery = useRef(query || "");
 
+  const reset = () => {
+    overview = null;
+    setValue('1');
+    dispatch(getIndexOverview());
+  }
+
+  const update = () => {
+    console.log("in update");
+    overview = null;
+    setValue('1');
+    console.log(dashboardQuery.current.value);
+    dispatch(getIndexOverview(dashboardQuery.current.value));
+  }
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -95,7 +112,35 @@ function App() {
           <LinearProgress />
           :
           <React.Fragment>
-            <Typography variant="h4">Currently summarizing {overview.total.toLocaleString()} recipes.</Typography>
+
+            <Grid
+              container
+              direction="row"
+              spacing={3}
+              alignItems="center">
+
+              <Grid item xs>
+                <TextField
+                  id="dashboardQuery"
+                  inputRef={dashboardQuery}
+                  defaultValue={query || ""}
+                  fullWidth
+                  variant="outlined"
+                  onKeyPress={e => {
+                    if (e.key === 'Enter') {
+                      update();
+                    }
+                  }}
+                />
+              </Grid>
+
+              <Grid item>
+                <Button variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
+              </Grid>
+            </Grid>
+            <Box mt={6} />
+
+            <Typography variant="h5">Summarizing {overview.total.toLocaleString()} recipes which match the query.</Typography>
             <Box mt={6} />
             <IndexOverview />
 
@@ -111,11 +156,11 @@ function App() {
                     variant="scrollable"
                     scrollButtons="auto">
                     <Tab label="Greenhouse Gas Emissions" value="1" style={{ minWidth: 50 }} />
-                    <Tab label="Fresh Water Withdrawls" value="2"  style={{ minWidth: 50 }} />
-                    <Tab label="Land Use" value="3"  style={{ minWidth: 50 }} />
-                    <Tab label="Acidifying Emissions" value="4"  style={{ minWidth: 50 }} />
-                    <Tab label="Stress Weighted Water Use" value="5"  style={{ minWidth: 50 }} />
-                    <Tab label="Eutrophying Emissions" value="6"  style={{ minWidth: 50 }} />
+                    <Tab label="Fresh Water Withdrawls" value="2" style={{ minWidth: 50 }} />
+                    <Tab label="Land Use" value="3" style={{ minWidth: 50 }} />
+                    <Tab label="Acidifying Emissions" value="4" style={{ minWidth: 50 }} />
+                    <Tab label="Stress Weighted Water Use" value="5" style={{ minWidth: 50 }} />
+                    <Tab label="Eutrophying Emissions" value="6" style={{ minWidth: 50 }} />
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>

@@ -1,8 +1,9 @@
-export const getIndexOverview = () => {
+export const getIndexOverview = (query) => {
     return{
         type : "GET_INDEX_OVERVIEW",
         payload : {
-
+            overview: null,
+            query: query || ""
         }
     };
 };

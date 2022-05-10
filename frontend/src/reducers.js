@@ -1,14 +1,17 @@
 const defaultState = {
     overview: null,
+    query: null
 };
 
 const reducer = (state = defaultState, action) => {
     switch (action.type) {
 
         case 'GET_INDEX_OVERVIEW':
-            state = defaultState;
+            state = {
+                overview: null
+            };
         case 'SET_INDEX_OVERVIEW':
-            return { ...state, ...action.payload };
+            return Object.assign({}, state, action.payload);
         default:
             return state;
     }
