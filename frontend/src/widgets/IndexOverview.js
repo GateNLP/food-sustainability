@@ -175,36 +175,6 @@ const IndexOverview = (props) => {
                 alignItems="flex-start">
 
                 <Grid item xs={12}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
-                        Median GHGE (Kg of CO<sub>2</sub> eq) per Portion
-                    </Typography>
-                </Grid>
-
-                <Grid item xs={6}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
-                        per Source
-                    </Typography>
-                    <Plot divId="ghge-sources" style={{ width: "100%" }} data={[ghgeSources]} layout={{ margin: { t: 10, b: 20, l: 200 }, autosize: true, height: 450, xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: true, 'displayModeBar': false }} />
-                </Grid>
-
-                <Grid item xs={6}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
-                        per Diet
-                    </Typography>
-                    <Plot divId="ghge-suitable-for" style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={{ margin: { t: 10, b: 20, l: 200 }, autosize: true, height: 450, xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: true, 'displayModeBar': false }} />
-                </Grid>
-
-            </Grid>
-
-            <Box mt={6} />
-
-            <Grid component={Paper}
-                container
-                direction="row"
-                spacing={3}
-                alignItems="flex-start">
-
-                <Grid item xs={12}>
                     <Typography variant={"h6"}>Most common ingredients in recipes suitable for...</Typography>
                 </Grid>
 
@@ -223,6 +193,7 @@ const IndexOverview = (props) => {
                     <ReactWordcloud style={{ height: 400 }} id="cloud-vegans" words={vegansCloud} options={options} callbacks={callbacks} />
                 </Grid>
             </Grid>
+            <Box mt={6}/>
         </React.Fragment>
 
     )

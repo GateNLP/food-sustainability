@@ -25,6 +25,7 @@ import org.elasticsearch.search.aggregations.bucket.ParsedSingleBucketAggregatio
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.metrics.ParsedPercentiles;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,20 @@ public class IndexOverview {
 
    @Value("${elastic.index}")
    private String ELASTIC_INDEX;
+
+   private static Map<String, String> indicators;
+
+   static {
+      indicators = new LinkedHashMap<String, String>();
+
+      indicators.put("ghge", "totalghge");
+      indicators.put("fww", "totalfreshwaterwithdrawals");
+      indicators.put("landUse", "totallanduse");
+      indicators.put("acid", "totalacidifyingemissions");
+      indicators.put("swwu", "totalstressweightedwateruse");
+      indicators.put("ee", "totaleutrophyingemissions");
+      
+   }
 
    private static RestHighLevelClient ELASTIC_CLIENT;
 
@@ -55,6 +70,7 @@ public class IndexOverview {
 
    @GetMapping("overview")
    public Map overview() throws Exception {
+
       Map<String, Object> result = new LinkedHashMap<String, Object>();
 
       SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -67,13 +83,16 @@ public class IndexOverview {
 
       sourceBuilder.aggregation(AggregationBuilders.terms("suitableFor").field("suitable_for.keyword"));
 
-      sourceBuilder.aggregation(AggregationBuilders.terms("ghge_source").field("source.keyword")
-            .order(BucketOrder.aggregation("median", "50", false))
-            .subAggregation(AggregationBuilders.percentiles("median").field("totalghge/portion").percentiles(50)));
+      for (Map.Entry indicator : indicators.entrySet()) {
+         sourceBuilder.aggregation(AggregationBuilders.terms(indicator.getKey() + "_source").field("source.keyword")
+               .order(BucketOrder.aggregation("median", "50", false)).subAggregation(AggregationBuilders
+                     .percentiles("median").field(indicator.getValue() + "/portion").percentiles(50)));
 
-      sourceBuilder.aggregation(AggregationBuilders.terms("ghge_suitable_for").field("suitable_for.keyword")
-            .order(BucketOrder.aggregation("median", "50", false))
-            .subAggregation(AggregationBuilders.percentiles("median").field("totalghge/portion").percentiles(50)));
+         sourceBuilder.aggregation(
+               AggregationBuilders.terms(indicator.getKey() + "_suitable_for").field("suitable_for.keyword")
+                     .order(BucketOrder.aggregation("median", "50", false)).subAggregation(AggregationBuilders
+                           .percentiles("median").field(indicator.getValue() + "/portion").percentiles(50)));
+      }
 
       sourceBuilder.aggregation(AggregationBuilders.terms("ingredients").field("suitable_for.keyword")
             .subAggregation(AggregationBuilders.terms("suitable_for").field("ingredientlist.keyword").size(50)));
@@ -89,9 +108,13 @@ public class IndexOverview {
       result.put("suitable_for",
             buildSuitableForData(aggregationToMap(searchResponse.getAggregations().get("suitableFor"))));
 
-      result.put("ghge_sources", medianAggregationToMap(searchResponse.getAggregations().get("ghge_source")));
-      result.put("ghge_suitable_for",
-            medianAggregationToMap(searchResponse.getAggregations().get("ghge_suitable_for")));
+      for (String indicator : indicators.keySet()) {
+         result.put(indicator + "_sources",
+               medianAggregationToMap(searchResponse.getAggregations().get(indicator + "_source")));
+         
+         result.put(indicator + "_suitable_for",
+               medianAggregationToMap(searchResponse.getAggregations().get(indicator + "_suitable_for")));
+      }
 
       Map<String, Map<String, Long>> ingredients = new LinkedHashMap<String, Map<String, Long>>();
 

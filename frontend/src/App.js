@@ -9,7 +9,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import { Box, Button, TextField, CircularProgress } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
+
+import { Box, Tab, Button, TextField, CircularProgress } from "@material-ui/core";
+import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 
 import { getIndexOverview } from "./actions";
 
@@ -21,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
 
 import IndexOverview from './widgets/IndexOverview';
+import IndicatorOverview from './widgets/IndicatorOverview';
 
 import { MuiThemeProvider } from "@material-ui/core";
 import { createTheme } from "@material-ui/core/styles";
@@ -48,6 +52,12 @@ const theme = createTheme({
 });
 
 function App() {
+
+  const [value, setValue] = React.useState('1');
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const dispatch = useDispatch();
 
@@ -86,8 +96,38 @@ function App() {
           :
           <React.Fragment>
             <Typography variant="h4">Currently summarizing {overview.total.toLocaleString()} recipes.</Typography>
-            <Box mt={6}/>
+            <Box mt={6} />
             <IndexOverview />
+
+            <TabContext value={value}>
+              <Grid component={Paper}
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
+
+                <Grid item xs={12} style={{ borderBottom: 1, borderColor: 'silver' }}>
+                  <TabList onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="auto">
+                    <Tab label="Greenhouse Gas Emmisions" value="1" style={{ minWidth: 50 }} />
+                    <Tab label="Fresh Water Withdrawls" value="2"  style={{ minWidth: 50 }} />
+                    <Tab label="Land Use" value="3"  style={{ minWidth: 50 }} />
+                    <Tab label="Acidifying Emissions" value="4"  style={{ minWidth: 50 }} />
+                    <Tab label="Stress Weighted Water Use" value="5"  style={{ minWidth: 50 }} />
+                    <Tab label="Eutrophying Emissions" value="6"  style={{ minWidth: 50 }} />
+                  </TabList>
+                </Grid>
+                <Grid item xs={12}>
+                  <TabPanel value="1"><IndicatorOverview field="ghge" description={<span>Greenhouse Gas Emmissions (Kg of CO<sub>2</sub> eq)</span>} /></TabPanel>
+                  <TabPanel value="2"><IndicatorOverview field="fww" description={<span>Fresh Water Withdrawls (L)</span>} /></TabPanel>
+                  <TabPanel value="3"><IndicatorOverview field="landUse" description={<span>Land Use (m<sup>2</sup>)</span>} /></TabPanel>
+                  <TabPanel value="4"><IndicatorOverview field="acid" description={<span>Acidifying Emissions (g of SO<sub>2</sub> eq)</span>} /></TabPanel>
+                  <TabPanel value="5"><IndicatorOverview field="swwu" description={<span>Stress Weighted Water Use (L)</span>} /></TabPanel>
+                  <TabPanel value="6"><IndicatorOverview field="ee" description={<span>Eutrophying Emissions (g PO<sub>4</sub><sup>3-</sup> eq)</span>} /></TabPanel>
+                </Grid>
+              </Grid>
+            </TabContext>
           </React.Fragment>
         }
         <Box mt={6} style={{ textAlign: "center" }}>
