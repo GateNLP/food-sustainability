@@ -101,6 +101,7 @@ while (row != null) {
 		data.put(key,data.remove(key+"_raw"));
 	}
 	
+	// work out the source of the recipe
 	if (data.get("allerhande"))
 		data.put("source","Allerhande");
 	else if (data.get("kochbar"))
@@ -113,11 +114,12 @@ while (row != null) {
 		data.put("source", "Other");
 
 
+	// work out who the recipe is suitable for
+	// omnivores can eat everything
 	List<String> suitableFor = new ArrayList<String>();
 	suitableFor.add("omnivores");
 
 	if (data.get("veganrecipe")) {
-		//data.put("suitable_for","vegans");
 		suitableFor.add("vegans");
 		suitableFor.add("vegetarians");
 	}
@@ -126,6 +128,11 @@ while (row != null) {
 
 	data.put("suitable_for",suitableFor);
 
+
+	// some of the items in the ingredients lists contain an amout
+	// as a first cut we just remove any none letters from the start
+	// of an ingredient. Can we use the measurement parser to do
+	// something better?
 	List<String> ingredients = data.get("ingredientlist");
 	if (ingredients != null) {
 		for (int i = 0 ; i < ingredients.size() ; ++i) {
