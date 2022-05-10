@@ -127,26 +127,28 @@ while (row != null) {
 	data.put("suitable_for",suitableFor);
 
 	List<String> ingredients = data.get("ingredientlist");
-	for (int i = 0 ; i < ingredients.size() ; ++i) {
-		String ingredient = ingredients.get(i);
-		
-		int c = 0;
-		
-		while (c < ingredient.length()) {
-			if (Character.isLetter(ingredient.charAt(c))) break;
+	if (ingredients != null) {
+		for (int i = 0 ; i < ingredients.size() ; ++i) {
+			String ingredient = ingredients.get(i);
 			
-			++c;
+			int c = 0;
+			
+			while (c < ingredient.length()) {
+				if (Character.isLetter(ingredient.charAt(c))) break;
+				
+				++c;
+			}
+			
+			// doesn't start with a number
+			if (c == 0) continue;
+			
+			// goodness knows
+			if (c == ingredient.length()) continue;
+			
+			ingredient = ingredient.substring(c);
+			
+			ingredients.set(i,ingredient);
 		}
-		
-		// doesn't start with a number
-		if (c == 0) continue;
-		
-		// goodness knows
-		if (c == ingredient.length()) continue;
-		
-		ingredient = ingredient.substring(c);
-		
-		ingredients.set(i,ingredient);
 	}
 
 
