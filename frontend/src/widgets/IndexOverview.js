@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
+import { select } from "d3-selection";
+
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 
@@ -20,6 +22,10 @@ import Paper from '@material-ui/core/Paper';
 
 import Typography from "@material-ui/core/Typography";
 
+
+import ReactWordcloud from 'react-wordcloud';
+
+
 import SVGDownload from './SVGDownload'
 import CSVDownload, {
     convertDistToCsv,
@@ -34,6 +40,15 @@ const Plot = createPlotlyComponent(Plotly);
 const IndexOverview = (props) => {
 
     const overview = useSelector(state => state.overview);
+
+    const options = {
+        rotations: 1,
+        rotationAngles: [0],
+        fontSizes: [11.25, 45],
+        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+        enableOptimizations: true,
+        deterministic: true,
+    };
 
     const recipeSources = {
         name: "Recipe Sources",
@@ -83,6 +98,43 @@ const IndexOverview = (props) => {
         y: Array.from(Object.keys(overview.ghge_suitable_for)).reverse(),
         x: Array.from(Object.values(overview.ghge_suitable_for)).reverse()
     };
+
+    const omnivoresCloud = [];
+    Object.keys(overview.ingredients.omnivores).forEach(ingredient => {
+        omnivoresCloud.push({ text: ingredient, value: overview.ingredients.omnivores[ingredient] });
+    });
+
+    const vegetariansCloud = [];
+    Object.keys(overview.ingredients.vegetarians).forEach(ingredient => {
+        vegetariansCloud.push({ text: ingredient, value: overview.ingredients.vegetarians[ingredient] });
+    });
+
+    const vegansCloud = [];
+    Object.keys(overview.ingredients.vegans).forEach(ingredient => {
+        vegansCloud.push({ text: ingredient, value: overview.ingredients.vegans[ingredient] });
+    });
+
+    function getCallback(callback) {
+        return function (word, event) {
+            const isActive = callback !== "onWordMouseOut";
+            const element = event.target;
+            const text = select(element);
+            text
+                .on("click", () => {
+                    if (isActive) {
+                        //props.addToQuery(word.text);
+                    }
+                })
+                .transition()
+                .attr("font-weight", isActive ? "bold" : "normal");
+        };
+    }
+
+    const callbacks = {
+        onWordClick: getCallback("onWordClick"),
+        onWordMouseOut: getCallback("onWordMouseOut"),
+        onWordMouseOver: getCallback("onWordMouseOver")
+    }
 
     return (
         <React.Fragment>
@@ -142,6 +194,34 @@ const IndexOverview = (props) => {
                     <Plot divId="ghge-suitable-for" style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={{ margin: { t: 10, b: 20, l: 200 }, autosize: true, height: 450, xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
 
+            </Grid>
+
+            <Box mt={6} />
+
+            <Grid component={Paper}
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
+
+                <Grid item xs={12}>
+                    <Typography variant={"h6"}>Most common ingredients in recipes suitable for...</Typography>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Omnivores</Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-omnivores" words={omnivoresCloud} options={options} callbacks={callbacks} />
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Vegetarians</Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-vegetarians" words={vegetariansCloud} options={options} callbacks={callbacks} />
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Vegans</Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-vegans" words={vegansCloud} options={options} callbacks={callbacks} />
+                </Grid>
             </Grid>
         </React.Fragment>
 

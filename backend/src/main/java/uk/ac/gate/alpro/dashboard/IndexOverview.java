@@ -75,6 +75,9 @@ public class IndexOverview {
             .order(BucketOrder.aggregation("median", "50", false))
             .subAggregation(AggregationBuilders.percentiles("median").field("totalghge/portion").percentiles(50)));
 
+      sourceBuilder.aggregation(AggregationBuilders.terms("ingredients").field("suitable_for.keyword")
+            .subAggregation(AggregationBuilders.terms("suitable_for").field("ingredientlist.keyword").size(50)));
+
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
 
@@ -89,6 +92,15 @@ public class IndexOverview {
       result.put("ghge_sources", medianAggregationToMap(searchResponse.getAggregations().get("ghge_source")));
       result.put("ghge_suitable_for",
             medianAggregationToMap(searchResponse.getAggregations().get("ghge_suitable_for")));
+
+      Map<String, Map<String, Long>> ingredients = new LinkedHashMap<String, Map<String, Long>>();
+
+      for (String diet : new String[] { "omnivores", "vegetarians", "vegans" }) {
+         ingredients.put(diet, aggregationToMap(((ParsedTerms) searchResponse.getAggregations().get("ingredients"))
+               .getBucketByKey(diet).getAggregations().get("suitable_for")));
+      }
+
+      result.put("ingredients", ingredients);
 
       return result;
    }
@@ -137,15 +149,15 @@ public class IndexOverview {
       List<Long> values = new ArrayList<Long>();
       List<String> parents = new ArrayList<String>();
 
-      ids.add("everyone");
-      labels.add("everyone");
-      values.add(types.getOrDefault("everyone", 0L));
+      ids.add("omnivores");
+      labels.add("omnivores");
+      values.add(types.getOrDefault("omnivores", 0L));
       parents.add("");
 
       ids.add("vegetarians");
       labels.add("vegetarians");
       values.add(types.getOrDefault("vegetarians", 0L));
-      parents.add("everyone");
+      parents.add("omnivores");
 
       ids.add("vegans");
       labels.add("vegans");
