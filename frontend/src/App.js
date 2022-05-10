@@ -110,7 +110,7 @@ function App() {
                   <TabList onChange={handleChange}
                     variant="scrollable"
                     scrollButtons="auto">
-                    <Tab label="Greenhouse Gas Emmisions" value="1" style={{ minWidth: 50 }} />
+                    <Tab label="Greenhouse Gas Emissions" value="1" style={{ minWidth: 50 }} />
                     <Tab label="Fresh Water Withdrawls" value="2"  style={{ minWidth: 50 }} />
                     <Tab label="Land Use" value="3"  style={{ minWidth: 50 }} />
                     <Tab label="Acidifying Emissions" value="4"  style={{ minWidth: 50 }} />
@@ -119,7 +119,7 @@ function App() {
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>
-                  <TabPanel value="1"><IndicatorOverview field="ghge" description={"Greenhouse Gas Emmissions (Kg of CO₂ eq)"} /></TabPanel>
+                  <TabPanel value="1"><IndicatorOverview field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
                   <TabPanel value="2"><IndicatorOverview field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
                   <TabPanel value="3"><IndicatorOverview field="landUse" description={"Land Use (m²)"} /></TabPanel>
                   <TabPanel value="4"><IndicatorOverview field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
