@@ -54,6 +54,14 @@ these to populate a single `suitable_for` field. This field is actually a
 list, into which we always put `everyone` and then add `vegetarians` or
 `vegans` based on the values of the individual columns.
 
+## Ingredients
+
+As well as converting the `ingredientlist` field into an actual list we try
+to normalise the values. Currently we do this by stripping off everything
+before the first letter, which removes amounts. Probably need to do this in
+a slightly better way as it leaves us with strings like `ml milk`, but still
+better than nothing.
+
 ## Raw Values
 
 For fields where we manipulate the original value in some way, we also store
@@ -62,6 +70,4 @@ to modify they just end up as `<header>`.
 
 ## Other things we should do
 
-1. remove amounts (if possible) from the ingredients list
-
-2. keep only the number in the serves column. Also why is this a list?	
+1. keep only the number in the serves column. Also why is this a list?	
