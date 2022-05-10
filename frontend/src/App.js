@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
