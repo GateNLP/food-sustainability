@@ -64,28 +64,6 @@ const IndexOverview = (props) => {
         }
     }
 
-    const ghgeSources = {
-        name: "Median GHGE/Portion per Source",
-        marker: {
-            color: "#3a7b8d",
-        },
-        type: "bar",
-        orientation: 'h',
-        y: Array.from(Object.keys(overview.ghge_sources)).reverse(),
-        x: Array.from(Object.values(overview.ghge_sources)).reverse()
-    };
-
-    const ghgeSuitableFor = {
-        name: "Median GHGE/Portion per Suitable For",
-        marker: {
-            color: "#3a7b8d",
-        },
-        type: "bar",
-        orientation: 'h',
-        y: Array.from(Object.keys(overview.ghge_suitable_for)).reverse(),
-        x: Array.from(Object.values(overview.ghge_suitable_for)).reverse()
-    };
-
     const omnivoresCloud = [];
     Object.keys(overview.ingredients.omnivores).forEach(ingredient => {
         omnivoresCloud.push({ text: ingredient, value: overview.ingredients.omnivores[ingredient] });
@@ -166,17 +144,32 @@ const IndexOverview = (props) => {
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Omnivores</Typography>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Omnivores
+                        <SVGDownload id="cloud-omnivores" filename="omnivore-ingredients.svg" />
+                        <SVGDownload id="cloud-omnivores" type="PNG" filename="omnivore-ingredients.png" />
+                        <CSVDownload filename="omnivore-ingredients" method={convertObjToCsv(overview.ingredients.omnivores, ["ingredient", "recipe count"])} />
+                    </Typography>
                     <ReactWordcloud style={{ height: 400 }} id="cloud-omnivores" words={omnivoresCloud} options={options} callbacks={callbacks} />
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Vegetarians</Typography>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Vegetarians
+                        <SVGDownload id="cloud-vegetarians" filename="vegetarian-ingredients.svg" />
+                        <SVGDownload id="cloud-vegetarians" type="PNG" filename="vegetarian-ingredients.png" />
+                        <CSVDownload filename="vegetarian-ingredients" method={convertObjToCsv(overview.ingredients.vegetarians, ["ingredient", "recipe count"])} />
+                    </Typography>
                     <ReactWordcloud style={{ height: 400 }} id="cloud-vegetarians" words={vegetariansCloud} options={options} callbacks={callbacks} />
                 </Grid>
 
                 <Grid item xs={4}>
-                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>Vegans</Typography>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Vegans
+                        <SVGDownload id="cloud-vegans" filename="vegan-ingredients.svg" />
+                        <SVGDownload id="cloud-vegans" type="PNG" filename="vegan-ingredients.png" />
+                        <CSVDownload filename="vegans-ingredients" method={convertObjToCsv(overview.ingredients.vegans, ["ingredient", "recipe count"])} />
+                    </Typography>
                     <ReactWordcloud style={{ height: 400 }} id="cloud-vegans" words={vegansCloud} options={options} callbacks={callbacks} />
                 </Grid>
             </Grid>

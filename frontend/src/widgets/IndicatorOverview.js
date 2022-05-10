@@ -71,15 +71,21 @@ const IndicatorOverview = (props) => {
                 <Grid item xs={6}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Source
+                        <SVGDownload id="bySource" filename={props.field+"_by_source.svg"} />
+                        <SVGDownload id="bySource" type="PNG" filename={props.field+"_by_source.png"} />
+                        <CSVDownload filename={props.field+"_by_source"} method={convertObjToCsv(overview[fieldSources], ["source", props.description])} />
                     </Typography>
-                    <Plot divId={fieldSources} style={{ width: "100%" }} data={[ghgeSources]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
+                    <Plot divId="bySource" style={{ width: "100%" }} data={[ghgeSources]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
 
                 <Grid item xs={6}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Diet
+                        <SVGDownload id="byDiet" filename={props.field+"_by_diet.svg"} />
+                        <SVGDownload id="byDiet" type="PNG" filename={props.field+"_by_diet.png"} />
+                        <CSVDownload filename={props.field+"_by_diet"} method={convertObjToCsv(overview[fieldDiet], ["diet", props.description])} />
                     </Typography>
-                    <Plot divId={fieldDiet} style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
+                    <Plot divId="byDiet" style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
 
             </Grid>

@@ -62,7 +62,7 @@ const SVGDownload = ({ id, filename, fill, type }) => {
             var url = domUrl.createObjectURL(svg);
             
             // create a new image to hold it the converted type
-            var img = new Image;
+            var img = new Image();
             
             // when the image is loaded we can get it as base64 url
             img.onload = function() {
