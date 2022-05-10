@@ -119,12 +119,12 @@ function App() {
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>
-                  <TabPanel value="1"><IndicatorOverview field="ghge" description={<span>Greenhouse Gas Emmissions (Kg of CO<sub>2</sub> eq)</span>} /></TabPanel>
-                  <TabPanel value="2"><IndicatorOverview field="fww" description={<span>Fresh Water Withdrawls (L)</span>} /></TabPanel>
-                  <TabPanel value="3"><IndicatorOverview field="landUse" description={<span>Land Use (m<sup>2</sup>)</span>} /></TabPanel>
-                  <TabPanel value="4"><IndicatorOverview field="acid" description={<span>Acidifying Emissions (g of SO<sub>2</sub> eq)</span>} /></TabPanel>
-                  <TabPanel value="5"><IndicatorOverview field="swwu" description={<span>Stress Weighted Water Use (L)</span>} /></TabPanel>
-                  <TabPanel value="6"><IndicatorOverview field="ee" description={<span>Eutrophying Emissions (g PO<sub>4</sub><sup>3-</sup> eq)</span>} /></TabPanel>
+                  <TabPanel value="1"><IndicatorOverview field="ghge" description={"Greenhouse Gas Emmissions (Kg of CO₂ eq)"} /></TabPanel>
+                  <TabPanel value="2"><IndicatorOverview field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
+                  <TabPanel value="3"><IndicatorOverview field="landUse" description={"Land Use (m²)"} /></TabPanel>
+                  <TabPanel value="4"><IndicatorOverview field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
+                  <TabPanel value="5"><IndicatorOverview field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
+                  <TabPanel value="6"><IndicatorOverview field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
                 </Grid>
               </Grid>
             </TabContext>

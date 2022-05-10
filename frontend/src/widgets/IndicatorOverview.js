@@ -41,8 +41,8 @@ const IndicatorOverview = (props) => {
 
     const overview = useSelector(state => state.overview);
 
-    const fieldSources = props.field+"_sources";
-    const fieldDiet = props.field+"_suitable_for";
+    const fieldSources = props.field + "_sources";
+    const fieldDiet = props.field + "_suitable_for";
 
     const ghgeSources = {
         marker: {
@@ -51,7 +51,7 @@ const IndicatorOverview = (props) => {
         type: "bar",
         orientation: 'h',
         y: Array.from(Object.keys(overview[fieldSources])).reverse(),
-        x: Array.from(Object.values(overview[fieldSources])).reverse()
+        x: Array.from(Object.values(overview[fieldSources])).reverse(),
     };
 
     const ghgeSuitableFor = {
@@ -64,10 +64,21 @@ const IndicatorOverview = (props) => {
         x: Array.from(Object.values(overview[fieldDiet])).reverse()
     };
 
+    const layout = {
+        margin: { t: 10, b: 50, l: 200 },
+        autosize: true,
+        height: 450,
+        xaxis: {
+            fixedrange: true,
+            title: props.description
+        },
+        yaxis: { fixedrange: true }
+    };
+
     return (
         <React.Fragment>
-            
-            <Grid 
+
+            <Grid
                 container
                 direction="row"
                 spacing={3}
@@ -83,14 +94,14 @@ const IndicatorOverview = (props) => {
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Source
                     </Typography>
-                    <Plot divId={fieldSources} style={{ width: "100%" }} data={[ghgeSources]} layout={{ margin: { t: 10, b: 20, l: 200 }, autosize: true, height: 450, xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: true, 'displayModeBar': false }} />
+                    <Plot divId={fieldSources} style={{ width: "100%" }} data={[ghgeSources]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
 
                 <Grid item xs={6}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Diet
                     </Typography>
-                    <Plot divId={fieldDiet} style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={{ margin: { t: 10, b: 20, l: 200 }, autosize: true, height: 450, xaxis: { fixedrange: true }, yaxis: { fixedrange: true } }} config={{ responsive: true, 'displayModeBar': false }} />
+                    <Plot divId={fieldDiet} style={{ width: "100%" }} data={[ghgeSuitableFor]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
 
             </Grid>
