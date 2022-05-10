@@ -125,9 +125,30 @@ while (row != null) {
 		suitableFor.add("vegetarians");
 
 	data.put("suitable_for",suitableFor);
-		//data.put("suitable_for","vegetarians");
-//	else
-//		data.put("suitable_for","omnivores");
+
+	List<String> ingredients = data.get("ingredientlist");
+	for (int i = 0 ; i < ingredients.size() ; ++i) {
+		String ingredient = ingredients.get(i);
+		
+		int c = 0;
+		
+		while (c < ingredient.length()) {
+			if (Character.isLetter(ingredient.charAt(c))) break;
+			
+			++c;
+		}
+		
+		// doesn't start with a number
+		if (c == 0) continue;
+		
+		// goodness knows
+		if (c == ingredient.length()) continue;
+		
+		ingredient = ingredient.substring(c);
+		
+		ingredients.set(i,ingredient);
+	}
+
 
 	data.remove("mimetype");
 	data.remove("gate.sourceurl");
