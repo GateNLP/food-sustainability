@@ -3,17 +3,11 @@ import React, { useRef, useState, useEffect } from "react";
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 
 import Paper from '@material-ui/core/Paper';
 
-import { Box, Tab, Button, TextField, CircularProgress } from "@material-ui/core";
+import { Box, Tab, Button, TextField } from "@material-ui/core";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 
 import { getIndexOverview } from "./actions";
@@ -86,6 +80,12 @@ function App() {
     dispatch(getIndexOverview(dashboardQuery.current.value));
   }
 
+  const addToQuery = (restriction) => {
+    var regex = new RegExp(restriction+'([\\s\\b]|$)',"gim");
+    if (dashboardQuery.current.value.match(regex) === null)
+      dashboardQuery.current.value = dashboardQuery.current.value + " " + restriction;
+  }
+
   return (
     <MuiThemeProvider theme={theme}>
       <Container>
@@ -142,7 +142,7 @@ function App() {
 
             <Typography variant="h5">Summarizing {overview.total.toLocaleString()} recipes which match the query.</Typography>
             <Box mt={6} />
-            <IndexOverview />
+            <IndexOverview addToQuery={addToQuery}/>
 
             <TabContext value={value}>
               <Grid component={Paper}

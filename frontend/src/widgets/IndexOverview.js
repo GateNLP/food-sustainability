@@ -3,39 +3,26 @@ import { useSelector } from "react-redux";
 
 import { select } from "d3-selection";
 
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 
-import { Box, Tab, Divider, Button } from "@material-ui/core";
-import { TabContext, TabList, TabPanel } from "@material-ui/lab";
+import { Box } from "@material-ui/core";
 
 import Plotly from 'plotly.js-dist-min'
 import createPlotlyComponent from 'react-plotly.js/factory';
 
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import Typography from "@material-ui/core/Typography";
 
-
 import ReactWordcloud from 'react-wordcloud';
-
 
 import SVGDownload from './SVGDownload'
 import CSVDownload, {
-    convertDistToCsv,
     convertObjToCsv,
     convertSunburstToCsv
 } from "./CSVDownload";
 
 const Plot = createPlotlyComponent(Plotly);
-
-//#6cbb31
 
 const IndexOverview = (props) => {
 
@@ -122,7 +109,7 @@ const IndexOverview = (props) => {
             text
                 .on("click", () => {
                     if (isActive) {
-                        //props.addToQuery(word.text);
+                        props.addToQuery(word.text);
                     }
                 })
                 .transition()
