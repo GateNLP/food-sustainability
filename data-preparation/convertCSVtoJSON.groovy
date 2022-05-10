@@ -114,7 +114,7 @@ while (row != null) {
 
 
 	List<String> suitableFor = new ArrayList<String>();
-	suitableFor.add("everyone");
+	suitableFor.add("omnivores");
 
 	if (data.get("veganrecipe")) {
 		//data.put("suitable_for","vegans");
