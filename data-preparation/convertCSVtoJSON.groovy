@@ -130,7 +130,7 @@ while (row != null) {
 	data.put("suitable_for",suitableFor);
 	
 	if (data.containsKey("url")) {
-		String url = data.get("url"));
+		String url = data.get("url");
 		
 		if (!url.startsWith("http")) {
 			url = "https://"+url;
