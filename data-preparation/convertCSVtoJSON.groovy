@@ -167,6 +167,13 @@ while (row != null) {
 			ingredients.set(i,ingredient);
 		}
 	}
+	
+	// having cook in the cooking methods list seems silly so just remove it for now
+	List<String> methods = data.get("cookingmethodlist");
+	if (methods != null) methods.remove("cook");
+
+	List<String> serves = data.get("serveslist");
+	if (serves != null && serves.size() > 1) System.err.println(data.get("title"));
 
 
 	data.remove("mimetype");
