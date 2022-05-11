@@ -5,8 +5,10 @@ import Grid from "@material-ui/core/Grid";
 
 import Plotly from 'plotly.js-dist-min'
 import createPlotlyComponent from 'react-plotly.js/factory';
-
+import { Box } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
+
+import RecipeList from './RecipeList';
 
 import SVGDownload from './SVGDownload'
 import CSVDownload, {
@@ -14,6 +16,15 @@ import CSVDownload, {
 } from "./CSVDownload";
 
 const Plot = createPlotlyComponent(Plotly);
+
+const descriptions = {
+    "ghge": "Greenhouse Gas Emissions (Kg of CO₂ eq)",
+    "fww": "Fresh Water Withdrawls (L)",
+    "landUse": "Land Use (m²)",
+    "acid": "Acidifying Emissions (g of SO₂ eq)",
+    "swwu": "Stress Weighted Water Use (L)",
+    "ee": "Eutrophying Emissions (g PO₄³⁻ eq)"
+}
 
 const IndicatorOverview = (props) => {
 
@@ -48,7 +59,7 @@ const IndicatorOverview = (props) => {
         height: 450,
         xaxis: {
             fixedrange: true,
-            title: props.description
+            title: descriptions[props.field]
         },
         yaxis: { fixedrange: true }
     };
@@ -64,7 +75,7 @@ const IndicatorOverview = (props) => {
 
                 <Grid item xs={12}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
-                        Median {props.description} per Portion
+                        Median {descriptions[props.field]} per Portion
                     </Typography>
                 </Grid>
 
@@ -89,6 +100,12 @@ const IndicatorOverview = (props) => {
                 </Grid>
 
             </Grid>
+
+            <Box mt={6}/>
+
+            <Typography variant="body1">Selected recipes sorted by decreasing {descriptions[props.field]}</Typography>
+            
+            <RecipeList query={props.query} indicator={props.field} descriptions={descriptions}/>
 
         </React.Fragment>
 

@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import IndexOverview from './widgets/IndexOverview';
 import IndicatorOverview from './widgets/IndicatorOverview';
-import RecipeList from './widgets/RecipeList';
 
 import { MuiThemeProvider } from "@material-ui/core";
 import { createTheme } from "@material-ui/core/styles";
@@ -165,19 +164,15 @@ function App() {
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>
-                  <TabPanel value="1"><IndicatorOverview field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
-                  <TabPanel value="2"><IndicatorOverview field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
-                  <TabPanel value="3"><IndicatorOverview field="landUse" description={"Land Use (m²)"} /></TabPanel>
-                  <TabPanel value="4"><IndicatorOverview field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
-                  <TabPanel value="5"><IndicatorOverview field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
-                  <TabPanel value="6"><IndicatorOverview field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
+                  <TabPanel value="1"><IndicatorOverview query={query} field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
+                  <TabPanel value="2"><IndicatorOverview query={query} field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
+                  <TabPanel value="3"><IndicatorOverview query={query} field="landUse" description={"Land Use (m²)"} /></TabPanel>
+                  <TabPanel value="4"><IndicatorOverview query={query} field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
+                  <TabPanel value="5"><IndicatorOverview query={query} field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
+                  <TabPanel value="6"><IndicatorOverview query={query} field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
                 </Grid>
               </Grid>
             </TabContext>
-
-            <Box mt={6}/>
-            
-            <RecipeList query={query} />
 
           </React.Fragment>
         }

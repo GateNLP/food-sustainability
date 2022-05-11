@@ -30,6 +30,8 @@ import org.elasticsearch.search.aggregations.bucket.terms.ParsedTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.ParsedPercentiles;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -213,7 +215,8 @@ public class IndexOverview {
    }
 
    @GetMapping("/recipes")
-   public Map<String, Object> recipes(@RequestParam(value = "query", defaultValue = "") String query) throws Exception {
+   public Map<String, Object> recipes(@RequestParam(value = "query", defaultValue = "") String query,
+         @RequestParam(value = "indicator", defaultValue = "ghge") String indicator) throws Exception {
 
       // this is where we assemble information about what we are interested in
       SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -237,6 +240,10 @@ public class IndexOverview {
          sourceBuilder.query(
                QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
+      
+      FieldSortBuilder sortByIndicator = new FieldSortBuilder(indicators.get(indicator)+"/portion").order(SortOrder.DESC);
+      
+      sourceBuilder.sort(sortByIndicator);
 
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);

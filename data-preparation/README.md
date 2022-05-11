@@ -34,7 +34,8 @@ final JSON we index
 ## Null
 
 If the cell is `(null)` then we simply don't add anything to the JSON as the
-lack of a field will count as null in the index.
+lack of a field will count as null in the index. The same now goes for cells
+that have the value `-`
 
 ## Source
 
@@ -61,6 +62,13 @@ to normalise the values. Currently we do this by stripping off everything
 before the first letter, which removes amounts. Probably need to do this in
 a slightly better way as it leaves us with strings like `ml milk`, but still
 better than nothing.
+
+## URL
+
+Some of the URLs for the recipes didn't start with a protocol. This is a pain
+when building a link in the UI as they get treated as relative links. So, if
+the value doesn't start with `http` we now prepend `https://` just to be on the
+safe side.
 
 ## Raw Values
 
