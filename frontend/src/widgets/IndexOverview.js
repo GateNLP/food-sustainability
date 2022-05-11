@@ -82,14 +82,14 @@ const IndexOverview = (props) => {
     const vegansMethodsCloud = makeCloud(overview.methods.vegans);
 
 
-    function getCallback(callback) {
+    function getCallback(callback, clickable) {
         return function (word, event) {
             const isActive = callback !== "onWordMouseOut";
             const element = event.target;
             const text = select(element);
             text
                 .on("click", () => {
-                    if (isActive) {
+                    if (isActive && clickable) {
                         props.addToQuery(word.text);
                     }
                 })
@@ -99,9 +99,15 @@ const IndexOverview = (props) => {
     }
 
     const callbacks = {
-        onWordClick: getCallback("onWordClick"),
-        onWordMouseOut: getCallback("onWordMouseOut"),
-        onWordMouseOver: getCallback("onWordMouseOver")
+        onWordClick: getCallback("onWordClick",true),
+        onWordMouseOut: getCallback("onWordMouseOut",true),
+        onWordMouseOver: getCallback("onWordMouseOver",true)
+    }
+
+    const methodCallbacks = {
+        onWordClick: getCallback("onWordClick",false),
+        onWordMouseOut: getCallback("onWordMouseOut",false),
+        onWordMouseOver: getCallback("onWordMouseOver",false)
     }
 
     return (
@@ -196,7 +202,7 @@ const IndexOverview = (props) => {
                         <SVGDownload id="cloud-methods-omnivores" type="PNG" filename="omnivore-methods.png" />
                         <CSVDownload filename="omnivore-methods" method={convertObjToCsv(overview.methods.omnivores, ["cooking method", "recipe count"])} />
                     </Typography>
-                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-omnivores" words={omnivoresMethodsCloud} options={options} callbacks={callbacks} />
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-omnivores" words={omnivoresMethodsCloud} options={options} callbacks={methodCallbacks} />
                 </Grid>
 
                 <Grid item xs={4}>
@@ -206,7 +212,7 @@ const IndexOverview = (props) => {
                         <SVGDownload id="cloud--methods-vegetarians" type="PNG" filename="vegetarian-methods.png" />
                         <CSVDownload filename="vegetarian-methods" method={convertObjToCsv(overview.methods.vegetarians, ["cooking method", "recipe count"])} />
                     </Typography>
-                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegetarians" words={vegetariansMethodsCloud} options={options} callbacks={callbacks} />
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegetarians" words={vegetariansMethodsCloud} options={options} callbacks={methodCallbacks} />
                 </Grid>
 
                 <Grid item xs={4}>
@@ -216,7 +222,7 @@ const IndexOverview = (props) => {
                         <SVGDownload id="cloud-methods-vegans" type="PNG" filename="vegan-methods.png" />
                         <CSVDownload filename="vegans-methods" method={convertObjToCsv(overview.methods.vegans, ["cooking method", "recipe count"])} />
                     </Typography>
-                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegans" words={vegansMethodsCloud} options={options} callbacks={callbacks} />
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegans" words={vegansMethodsCloud} options={options} callbacks={methodCallbacks} />
                 </Grid>
             </Grid>
 
