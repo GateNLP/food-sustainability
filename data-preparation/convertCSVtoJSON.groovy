@@ -128,6 +128,15 @@ while (row != null) {
 		suitableFor.add("vegetarians");
 
 	data.put("suitable_for",suitableFor);
+	
+	if (data.containsKey("url")) {
+		String url = data.get("url"));
+		
+		if (!url.startsWith("http")) {
+			url = "https://"+url;
+			data.put("url",url);
+		}
+	}
 
 
 	// some of the items in the ingredients lists contain an amout
