@@ -74,7 +74,7 @@ while (row != null) {
 			}
 			catch (Exception e) {
 				//ignore this
-				e.printStackTrace();
+				//e.printStackTrace();
 				continue;
 			}
 		}
@@ -170,7 +170,11 @@ while (row != null) {
 	
 	// having cook in the cooking methods list seems silly so just remove it for now
 	List<String> methods = data.get("cookingmethodlist");
-	if (methods != null) methods.remove("cook");
+	if (methods != null && methods.contains("cook")) {
+		List<String> temp = new ArrayList<String>(methods);
+		temp.remove("cook");
+		data.put("cookingmethodlist",temp);
+	}
 
 	List<String> serves = data.get("serveslist");
 	if (serves != null && serves.size() > 1) System.err.println(data.get("title"));
