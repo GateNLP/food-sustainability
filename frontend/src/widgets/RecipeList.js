@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 import Typography from "@material-ui/core/Typography";
+import { grey } from "@material-ui/core/colors";
 
 const style = {
   padding: 8,
@@ -114,14 +115,28 @@ class RecipeList extends Component {
                   <Typography variant="h6">
                     {i.url ?
                       <Link href={i.url} target="_blank">{i.title}</Link>
-                      : <span>{i.title}</span>}
+                      : <span>{i.title}</span>} <span style={{ color: "grey" }}>({i.source})</span>
 
                     <span style={{ float: "right", fontSize: "1.2em" }}>
-                      {i.suitable_for.includes("vegetarians") ? <span style={{ color: "green" }}>Ⓥ</span> : null}
-                      {i.suitable_for.includes("vegans") ? <span style={{ paddingLeft: "0.5ex" }}>🌱</span> : null}
+                      {i.suitable_for.includes("vegetarians") ? <span title="suitable for vegetarians" style={{ color: "green" }}>Ⓥ</span> : null}
+                      {i.suitable_for.includes("vegans") ? <span title="suitable for vegans" style={{ paddingLeft: "0.5ex" }}>🌱</span> : null}
                     </span>
                   </Typography>
                 </Grid>
+
+                <Grid item xs={12} style={{ textAlign: "right" }}>
+                  Serves: {i.serveslist?.join(", ")}
+                </Grid>
+
+                {i.ingredientlist ?
+                  <Grid item xs={12} style={{ textAlign: "left" }}>
+                    Ingredients: {i.ingredientlist?.join(", ")}
+                  </Grid> : null}
+
+                {i.cookingmethodlist ?
+                  <Grid item xs={10} style={{ textAlign: "left" }}>
+                    Cooking Methods: {i.cookingmethodlist?.join(", ")}
+                  </Grid> : null}
 
                 <Grid item xs={12}>
                   <Table size="small">

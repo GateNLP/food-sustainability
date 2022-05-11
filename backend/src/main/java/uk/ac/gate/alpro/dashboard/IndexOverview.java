@@ -109,6 +109,10 @@ public class IndexOverview {
 
       sourceBuilder.aggregation(AggregationBuilders.terms("ingredients").field("suitable_for.keyword")
             .subAggregation(AggregationBuilders.terms("suitable_for").field("ingredientlist.keyword").size(50)));
+      
+      sourceBuilder.aggregation(AggregationBuilders.terms("method").field("suitable_for.keyword")
+            .subAggregation(AggregationBuilders.terms("suitable_for").field("cookingmethodlist.keyword").size(50)));
+      
 
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
@@ -130,6 +134,7 @@ public class IndexOverview {
       }
 
       Map<String, Map<String, Long>> ingredients = new LinkedHashMap<String, Map<String, Long>>();
+      Map<String, Map<String, Long>> methods = new LinkedHashMap<String, Map<String, Long>>();
 
       for (String diet : new String[] { "omnivores", "vegetarians", "vegans" }) {
          Terms.Bucket bucket = ((ParsedTerms) searchResponse.getAggregations().get("ingredients")).getBucketByKey(diet);
@@ -138,9 +143,19 @@ public class IndexOverview {
             ingredients.put(diet, aggregationToMap(bucket.getAggregations().get("suitable_for")));
          else
             ingredients.put(diet, new HashMap());
+         
+
+         bucket = ((ParsedTerms) searchResponse.getAggregations().get("method")).getBucketByKey(diet);
+
+         if (bucket != null)
+            methods.put(diet, aggregationToMap(bucket.getAggregations().get("suitable_for")));
+         else
+            methods.put(diet, new HashMap());
+
       }
 
       result.put("ingredients", ingredients);
+      result.put("methods", methods);
 
       return result;
    }

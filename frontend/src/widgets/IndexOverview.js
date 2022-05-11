@@ -64,20 +64,23 @@ const IndexOverview = (props) => {
         }
     }
 
-    const omnivoresCloud = [];
-    Object.keys(overview.ingredients.omnivores).forEach(ingredient => {
-        omnivoresCloud.push({ text: ingredient, value: overview.ingredients.omnivores[ingredient] });
-    });
+    function makeCloud(data) {
+        const cloud = [];
+        Object.keys(data).forEach(item => {
+            cloud.push({ text: item, value: data[item] });
+        });
 
-    const vegetariansCloud = [];
-    Object.keys(overview.ingredients.vegetarians).forEach(ingredient => {
-        vegetariansCloud.push({ text: ingredient, value: overview.ingredients.vegetarians[ingredient] });
-    });
+        return cloud;
+    }
 
-    const vegansCloud = [];
-    Object.keys(overview.ingredients.vegans).forEach(ingredient => {
-        vegansCloud.push({ text: ingredient, value: overview.ingredients.vegans[ingredient] });
-    });
+    const omnivoresCloud = makeCloud(overview.ingredients.omnivores);
+    const vegetariansCloud = makeCloud(overview.ingredients.vegetarians);
+    const vegansCloud = makeCloud(overview.ingredients.vegans);
+
+    const omnivoresMethodsCloud = makeCloud(overview.methods.omnivores);
+    const vegetariansMethodsCloud = makeCloud(overview.methods.vegetarians);
+    const vegansMethodsCloud = makeCloud(overview.methods.vegans);
+
 
     function getCallback(callback) {
         return function (word, event) {
@@ -173,7 +176,51 @@ const IndexOverview = (props) => {
                     <ReactWordcloud style={{ height: 400 }} id="cloud-vegans" words={vegansCloud} options={options} callbacks={callbacks} />
                 </Grid>
             </Grid>
-            <Box mt={6}/>
+
+            <Box mt={6} />
+
+            <Grid component={Paper}
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
+
+                <Grid item xs={12}>
+                    <Typography variant={"h6"}>Most common cooking methods in recipes suitable for...</Typography>
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Omnivores
+                        <SVGDownload id="cloud-methods-omnivores" filename="omnivore-methods.svg" />
+                        <SVGDownload id="cloud-methods-omnivores" type="PNG" filename="omnivore-methods.png" />
+                        <CSVDownload filename="omnivore-methods" method={convertObjToCsv(overview.methods.omnivores, ["cooking method", "recipe count"])} />
+                    </Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-omnivores" words={omnivoresMethodsCloud} options={options} callbacks={callbacks} />
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Vegetarians
+                        <SVGDownload id="cloud-methods-vegetarians" filename="vegetarian-methods.svg" />
+                        <SVGDownload id="cloud--methods-vegetarians" type="PNG" filename="vegetarian-methods.png" />
+                        <CSVDownload filename="vegetarian-methods" method={convertObjToCsv(overview.methods.vegetarians, ["cooking method", "recipe count"])} />
+                    </Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegetarians" words={vegetariansMethodsCloud} options={options} callbacks={callbacks} />
+                </Grid>
+
+                <Grid item xs={4}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Vegans
+                        <SVGDownload id="cloud-methods-vegans" filename="vegan-methods.svg" />
+                        <SVGDownload id="cloud-methods-vegans" type="PNG" filename="vegan-methods.png" />
+                        <CSVDownload filename="vegans-methods" method={convertObjToCsv(overview.methods.vegans, ["cooking method", "recipe count"])} />
+                    </Typography>
+                    <ReactWordcloud style={{ height: 400 }} id="cloud-methods-vegans" words={vegansMethodsCloud} options={options} callbacks={callbacks} />
+                </Grid>
+            </Grid>
+
+            <Box mt={6} />
         </React.Fragment>
 
     )
