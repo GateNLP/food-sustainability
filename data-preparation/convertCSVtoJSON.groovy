@@ -177,7 +177,9 @@ while (row != null) {
 	}
 
 	List<String> serves = data.get("serveslist");
-	if (serves != null && serves.size() > 1) System.err.println(data.get("title"));
+	if (serves != null) {
+		data.put("serves",Long.valueOf(serves.get(0).replaceAll("[^0-9]","")));
+	}
 
 
 	data.remove("mimetype");
