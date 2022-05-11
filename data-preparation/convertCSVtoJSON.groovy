@@ -178,10 +178,10 @@ while (row != null) {
 
 	List<String> serves = data.get("serveslist");
 	if (serves != null) {
-		try { data.put("serves",Long.valueOf(serves.get(0).replaceAll("[^0-9]",""))); }
-		catch (Exception e) {
-			System.err.println("Error: "+serves.get(0));
-		}
+		String numbers = serves.get(0).replaceAll("[^0-9]","");
+		
+		if (!numbers.equals(""))
+			data.put("serves",Long.valueOf(numbers));
 	}
 
 
