@@ -4,6 +4,7 @@ import axios from "axios";
 import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
+import { Box } from "@material-ui/core";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -124,9 +125,10 @@ class RecipeList extends Component {
                   </Typography>
                 </Grid>
 
-                <Grid item xs={12} style={{ textAlign: "right" }}>
-                  Serves: {i.serveslist?.join(", ")}
-                </Grid>
+                {i.serves ?
+                  <Grid item xs={12} style={{ textAlign: "right" }}>
+                    Serves: {i.serves}
+                  </Grid> : <Box mt={3} />}
 
                 {i.ingredientlist ?
                   <Grid item xs={12} style={{ textAlign: "left" }}>
@@ -150,7 +152,7 @@ class RecipeList extends Component {
                     </TableHead>
                     <TableBody>
                       {Object.keys(this.props.descriptions).map((field, key) => (
-                        <TableRow id={key}>
+                        <TableRow key={key}>
                           <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }}>{this.props.descriptions[field]}</TableCell>
                           <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{(i[fields[field] + "_lower/portion"] || i[fields[field] + "/portion_lower"])?.toLocaleString()}</TableCell>
                           <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{i[fields[field] + "/portion"]?.toLocaleString()}</TableCell>
