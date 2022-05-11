@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import IndexOverview from './widgets/IndexOverview';
 import IndicatorOverview from './widgets/IndicatorOverview';
+import RecipeList from './widgets/RecipeList';
 
 import { MuiThemeProvider } from "@material-ui/core";
 import { createTheme } from "@material-ui/core/styles";
@@ -173,6 +174,11 @@ function App() {
                 </Grid>
               </Grid>
             </TabContext>
+
+            <Box mt={6}/>
+            
+            <RecipeList query={query} />
+
           </React.Fragment>
         }
         <Box mt={6} style={{ textAlign: "center" }}>

@@ -56,6 +56,7 @@ while (row != null) {
 		
 		// just skip the nulls
 		if (rawValue.equals("(null)")) continue;
+		if (rawValue.equals("-")) continue;
 		
 		data.put(key+"_raw",rawValue);
 		

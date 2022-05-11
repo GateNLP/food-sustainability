@@ -1,5 +1,6 @@
 package uk.ac.gate.alpro.dashboard;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,6 +11,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -18,6 +20,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.Scroll;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -82,9 +85,9 @@ public class IndexOverview {
 
       if (query.equals("")) {
          sourceBuilder.query(QueryBuilders.matchAllQuery());
-      }
-      else {
-         sourceBuilder.query(QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
+      } else {
+         sourceBuilder.query(
+               QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
 
       sourceBuilder.aggregation(AggregationBuilders.terms("sources").field("source.keyword"));
@@ -127,9 +130,8 @@ public class IndexOverview {
       Map<String, Map<String, Long>> ingredients = new LinkedHashMap<String, Map<String, Long>>();
 
       for (String diet : new String[] { "omnivores", "vegetarians", "vegans" }) {
-         Terms.Bucket bucket = ((ParsedTerms) searchResponse.getAggregations().get("ingredients"))
-               .getBucketByKey(diet);
-         
+         Terms.Bucket bucket = ((ParsedTerms) searchResponse.getAggregations().get("ingredients")).getBucketByKey(diet);
+
          if (bucket != null)
             ingredients.put(diet, aggregationToMap(bucket.getAggregations().get("suitable_for")));
          else
@@ -209,4 +211,76 @@ public class IndexOverview {
 
       return data;
    }
+
+   @GetMapping("/recipes")
+   public Map<String, Object> recipes(@RequestParam(value = "query", defaultValue = "") String query) throws Exception {
+
+      // this is where we assemble information about what we are interested in
+      SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
+      // we want to track the total number of hits as this tells us how many
+      // organic tweets there are in the index (i.e. where someone wrote
+      // something new)
+      sourceBuilder.trackTotalHits(true);
+
+      // we don't need the document sources at this point as all we are doing
+      // is collecting statistics
+      sourceBuilder.fetchSource(true);
+
+      // in fact we don't even care which documents we matched, so don't bother
+      // returning any of them
+      sourceBuilder.size(10);
+
+      if (query.equals("")) {
+         sourceBuilder.query(QueryBuilders.matchAllQuery());
+      } else {
+         sourceBuilder.query(
+               QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
+      }
+
+      SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
+      searchRequest.source(sourceBuilder);
+      searchRequest.scroll(ELASTIC_SCROLL);
+
+      // do the actual search
+      SearchResponse searchResponse = ELASTIC_CLIENT.search(searchRequest, RequestOptions.DEFAULT);
+
+      Map<String, Object> data = new LinkedHashMap<String, Object>();
+
+      data.put("scroll_id", searchResponse.getScrollId());
+
+      // store the number of replies within the conversation (this is the size of the
+      // conversation minus the original tweet)
+      data.put("total", searchResponse.getHits().getTotalHits().value);
+
+      data.put("recipes", scroll(searchResponse.getHits().getHits()));
+
+      return data;
+   }
+
+   @GetMapping("/recipes/scroll")
+   public List<Map<String, Object>> scroll(@RequestParam(value = "id") String id) throws IOException {
+
+      // TODO what happens if the scroll has expired? Can we return a message we can
+      // capture
+
+      SearchScrollRequest scrollRequest = new SearchScrollRequest(id);
+      scrollRequest.scroll(ELASTIC_SCROLL);
+      SearchResponse searchResponse = ELASTIC_CLIENT.scroll(scrollRequest, RequestOptions.DEFAULT);
+
+      return scroll(searchResponse.getHits().getHits());
+   }
+
+   private List<Map<String, Object>> scroll(SearchHit[] hits) {
+      List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+
+      for (SearchHit hit : hits) {
+         Map<String, Object> sourceMap = hit.getSourceAsMap();
+         // tweet.put("sort", hit.getSortValues());
+         data.add(sourceMap);
+      }
+
+      return data;
+   }
+
 }
