@@ -144,7 +144,7 @@ class RecipeList extends Component {
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Indicator</TableCell>
+                        <TableCell>Indicator (per {this.props.analyse})</TableCell>
                         <TableCell>Lower Bound</TableCell>
                         <TableCell>Value</TableCell>
                         <TableCell>Upper Bound</TableCell>
@@ -154,9 +154,9 @@ class RecipeList extends Component {
                       {Object.keys(this.props.descriptions).map((field, key) => (
                         <TableRow key={key}>
                           <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }}>{this.props.descriptions[field]}</TableCell>
-                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{(i[fields[field] + "_lower/portion"] || i[fields[field] + "/portion_lower"])?.toLocaleString()}</TableCell>
-                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{i[fields[field] + "/portion"]?.toLocaleString()}</TableCell>
-                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{(i[fields[field] + "_upper/portion"] || i[fields[field] + "/portion_upper"])?.toLocaleString()}</TableCell>
+                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{(i[fields[field] + "_lower" + (this.props.analyse === "portion" ? "/portion" : "")] || i[fields[field] + (this.props.analyse === "portion" ? "/portion" : "") + "_lower"])?.toLocaleString()}</TableCell>
+                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{i[fields[field] + (this.props.analyse === "portion" ? "/portion" : "")]?.toLocaleString()}</TableCell>
+                          <TableCell style={{ fontStyle: field === this.props.indicator ? "italic" : "normal" }} >{(i[fields[field] + "_upper" + (this.props.analyse === "portion" ? "/portion" : "")] || i[fields[field] + (this.props.analyse === "portion" ? "/portion" : "") + "_upper"])?.toLocaleString()}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

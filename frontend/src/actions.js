@@ -1,9 +1,10 @@
-export const getIndexOverview = (query) => {
+export const getIndexOverview = (query, analyse) => {
     return{
         type : "GET_INDEX_OVERVIEW",
         payload : {
             overview: null,
-            query: query || ""
+            query: query || "",
+            analyse: analyse || "portion"
         }
     };
 };

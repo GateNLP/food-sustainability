@@ -75,7 +75,7 @@ const IndicatorOverview = (props) => {
 
                 <Grid item xs={12}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
-                        Median {descriptions[props.field]} per Portion
+                        Median {descriptions[props.field]} per {props.analyse}
                     </Typography>
                 </Grid>
 
@@ -105,7 +105,7 @@ const IndicatorOverview = (props) => {
 
             <Typography variant="body1">Selected recipes sorted by decreasing {descriptions[props.field]}</Typography>
             
-            <RecipeList query={props.query} indicator={props.field} descriptions={descriptions}/>
+            <RecipeList query={props.query} analyse={props.analyse} indicator={props.field} descriptions={descriptions}/>
 
         </React.Fragment>
 

@@ -70,6 +70,20 @@ when building a link in the UI as they get treated as relative links. So, if
 the value doesn't start with `http` we now prepend `https://` just to be on the
 safe side.
 
+## Cooking Methods
+
+As well as converting to a list, I've removed `cook` from this as I don't think
+it really added anything, and it swamped the other values.
+
+## Serves
+
+The `serveslist` field was a list, but only ever has at most one value. This
+wasn't always a number (it could be something like `Serves 2` or `Makes 3`) but
+I've introduced a new field `serves` which is a real number extracted from the
+single list value. Need to check any future data dumps to make sure they don't
+end up with multiple values in this list, although if they do, then goodness
+knows how the per portion fields are calculated.
+
 ## Raw Values
 
 For fields where we manipulate the original value in some way, we also store
@@ -77,5 +91,3 @@ the original in the field `<header>_raw`. And for those fields we don't need
 to modify they just end up as `<header>`.
 
 ## Other things we should do
-
-1. keep only the number in the serves column. Also why is this a list?	

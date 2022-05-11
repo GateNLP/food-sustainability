@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 
 import Paper from '@material-ui/core/Paper';
 
-import { Box, Tab, Button, TextField } from "@material-ui/core";
+import { Box, Tab, Button, TextField, Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 
 import { getIndexOverview } from "./actions";
@@ -58,7 +58,12 @@ function App() {
 
   var overview = useSelector(state => state.overview);
   const query = useSelector(state => state.query);
-
+  
+  const [analyse, setAnalyse] = React.useState(useSelector(state => state.analyse)); 
+  
+  const handleAnalysisChange = (event) => {
+    setAnalyse(event.target.value);
+  };
 
   if (query == null && (overview === null || overview === undefined)) {
     dispatch(getIndexOverview())
@@ -77,11 +82,11 @@ function App() {
     overview = null;
     setValue('1');
     console.log(dashboardQuery.current.value);
-    dispatch(getIndexOverview(dashboardQuery.current.value));
+    dispatch(getIndexOverview(dashboardQuery.current.value,analyse));
   }
 
   const addToQuery = (restriction) => {
-    var regex = new RegExp(restriction+'([\\s\\b]|$)',"gim");
+    var regex = new RegExp(restriction + '([\\s\\b]|$)', "gim");
     if (dashboardQuery.current.value.match(regex) === null)
       dashboardQuery.current.value = dashboardQuery.current.value + " " + restriction;
   }
@@ -135,14 +140,20 @@ function App() {
               </Grid>
 
               <Grid item>
-                <Button variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
+                <FormControl>
+                  <InputLabel>Analyse</InputLabel>
+                  <Select variant="outlined" value={analyse} label="Analyse" autoWidth onChange={handleAnalysisChange}>
+                    <MenuItem value={"portion"}>Portions</MenuItem>
+                    <MenuItem value={"recipe"}>Recipes</MenuItem>
+                  </Select>
+                </FormControl> <Button variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
               </Grid>
             </Grid>
             <Box mt={6} />
 
             <Typography variant="h5">Summarizing {overview.total.toLocaleString()} recipes which match the query.</Typography>
             <Box mt={6} />
-            <IndexOverview addToQuery={addToQuery}/>
+            <IndexOverview addToQuery={addToQuery} />
 
             <TabContext value={value}>
               <Grid component={Paper}
@@ -164,12 +175,12 @@ function App() {
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>
-                  <TabPanel value="1"><IndicatorOverview query={query} field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
-                  <TabPanel value="2"><IndicatorOverview query={query} field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
-                  <TabPanel value="3"><IndicatorOverview query={query} field="landUse" description={"Land Use (m²)"} /></TabPanel>
-                  <TabPanel value="4"><IndicatorOverview query={query} field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
-                  <TabPanel value="5"><IndicatorOverview query={query} field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
-                  <TabPanel value="6"><IndicatorOverview query={query} field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
+                  <TabPanel value="1"><IndicatorOverview analyse={analyse} query={query} field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
+                  <TabPanel value="2"><IndicatorOverview analyse={analyse} query={query} field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
+                  <TabPanel value="3"><IndicatorOverview analyse={analyse} query={query} field="landUse" description={"Land Use (m²)"} /></TabPanel>
+                  <TabPanel value="4"><IndicatorOverview analyse={analyse} query={query} field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
+                  <TabPanel value="5"><IndicatorOverview analyse={analyse} query={query} field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
+                  <TabPanel value="6"><IndicatorOverview analyse={analyse} query={query} field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
                 </Grid>
               </Grid>
             </TabContext>
