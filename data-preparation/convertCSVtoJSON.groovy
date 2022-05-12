@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Grab('uk.ac.gate:gate-core:9.0')
-@Grab('uk.ac.gate.plugins:tagger-measurements:8.6-SNAPSHOT')
+@Grab('uk.ac.gate.plugins:tagger-measurements:8.5')
 import gate.creole.measurements.*;
 
 measurementsParser = new MeasurementsParser(
@@ -157,8 +157,10 @@ while (row != null) {
 			String ingredient = ingredients.get(i);
 	
 			while (ingredient.matches("^[0-9.\u00BC-\u00BE\u2150-\u215E].*")) {
-			
+
 				ingredient = ingredient.replaceAll("^[0-9.\u00BC-\u00BE\u2150-\u215E]+","").trim();
+
+				ingredient = ingredient.replaceAll("/+","/");
 
 				Measurement measurement = measurementsParser.parse(1,ingredient);
 			
