@@ -162,6 +162,8 @@ while (row != null) {
 	if (ingredients != null) {
 		for (int i = 0 ; i < ingredients.size() ; ++i) {
 			String ingredient = ingredients.get(i);
+			
+			ingredient = ingredient.replaceAll("ingredientlist:","").trim();
 	
 			while (ingredient.matches("^[0-9.\u00BC-\u00BE\u2150-\u215E].*")) {
 
