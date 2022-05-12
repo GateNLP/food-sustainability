@@ -165,9 +165,9 @@ while (row != null) {
 			
 			ingredient = ingredient.replaceAll("ingredientlist:","").trim();
 	
-			while (ingredient.matches("^[0-9.\u00BC-\u00BE\u2150-\u215E].*")) {
+			while (ingredient.matches("^[0-9./\u00BC-\u00BE\u2150-\u215E].*")) {
 
-				ingredient = ingredient.replaceAll("^[0-9.\u00BC-\u00BE\u2150-\u215E]+","").trim();
+				ingredient = ingredient.replaceAll("^[0-9./\u00BC-\u00BE\u2150-\u215E]+","").trim();
 
 				ingredient = ingredient.replaceAll("/+","/");
 
