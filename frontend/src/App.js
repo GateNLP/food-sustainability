@@ -106,8 +106,8 @@ function App() {
             Food Sustainability Dashboard
           </Typography>
 
-          <Link href="https://gate-socmedia.group.shef.ac.uk/" target="_blank"><UoSLogo style={{ paddingRight: 40 }} /></Link>
-          <Link href="https://www.city.ac.uk/" target="_blank"><CityUoLLogo style={{ paddingRight: 20 }} /></Link>
+          <Link href="https://gate.ac.uk/" target="_blank"><UoSLogo style={{ paddingRight: 40 }} /></Link>
+          <Link href="https://www.city.ac.uk/research/centres/food-policy" target="_blank"><CityUoLLogo style={{ paddingRight: 20 }} /></Link>
 
         </Grid>
 
@@ -196,7 +196,7 @@ function App() {
           </React.Fragment>
         }
         <Box mt={6} style={{ textAlign: "center" }}>
-          <Typography variant="overline" paragraph>This tool has been developed with a <Link href="https://www.alprofoundation.org/project/communicating-the-environmental-impact-of-plant-based-recipes/" target="_blank">research grant</Link> from the <Link href="https://www.alprofoundation.org/" target="_blank">Alpro Foundation</Link></Typography>
+          <Typography variant="overline" paragraph style={{paddingLeft: "10em", paddingRight: "10em"}}>This tool has been developed with a <Link href="https://www.alprofoundation.org/project/communicating-the-environmental-impact-of-plant-based-recipes/" target="_blank">research grant</Link> from the <Link href="https://www.alprofoundation.org/" target="_blank">Alpro Foundation</Link> and University of Sheffield Knowledge Exchange support funding for the project "Visualising the environmental impacts of plant-based recipes in Europe”</Typography>
           <Typography variant="overline">Logo By <Link href="https://commons.wikimedia.org/w/index.php?curid=10574216">DarKobra</Link> - DeviantArt, CC BY-SA 3.0</Typography>
         </Box>
       </Container>
