@@ -187,9 +187,9 @@ const IndexOverview = (props) => {
                 <Grid item xs={6}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Source
-                        <SVGDownload id="bySource" filename={props.field + "_by_source.svg"} />
-                        <SVGDownload id="bySource" type="PNG" filename={props.field + "_by_source.png"} />
-                        <CSVDownload filename={props.field + "_by_source"} method={convertObjToCsv(overview.calories_sources, ["source", props.description])} />
+                        <SVGDownload id="bySource" filename={"calories_by_source.svg"} />
+                        <SVGDownload id="bySource" type="PNG" filename={"calories_by_source.png"} />
+                        <CSVDownload filename={"calories_by_source"} method={convertObjToCsv(overview.calories_sources, ["source", "Calories (J)"])} />
                     </Typography>
                     <Plot divId="bySource" style={{ width: "100%" }} data={[caloriesSources]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
@@ -197,9 +197,9 @@ const IndexOverview = (props) => {
                 <Grid item xs={6}>
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         per Diet
-                        <SVGDownload id="byDiet" filename={props.field + "_by_diet.svg"} />
-                        <SVGDownload id="byDiet" type="PNG" filename={props.field + "_by_diet.png"} />
-                        <CSVDownload filename={props.field + "_by_diet"} method={convertObjToCsv(overview.calories_suitable_for, ["diet", props.description])} />
+                        <SVGDownload id="byDiet" filename={"calories_by_diet.svg"} />
+                        <SVGDownload id="byDiet" type="PNG" filename={"calories_by_diet.png"} />
+                        <CSVDownload filename={"calories_by_diet"} method={convertObjToCsv(overview.calories_suitable_for, ["diet", "Calories (J)"])} />
                     </Typography>
                     <Plot divId="byDiet" style={{ width: "100%" }} data={[caloriesSuitableFor]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
                 </Grid>
