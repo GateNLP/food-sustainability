@@ -15,6 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+@Grab('uk.ac.gate:gate-core:9.0')
+@Grab('uk.ac.gate.plugins:tagger-measurements:8.6-SNAPSHOT')
+import gate.creole.measurements.*;
+
+measurementsParser = new MeasurementsParser(
+	MeasurementsParser.class.getResource("/resources/units.dat"),
+	MeasurementsParser.class.getResource("/resources/common_words.txt"));
+
 objectMapper = new ObjectMapper();
 
 RFC4180Parser parser =
@@ -147,24 +155,17 @@ while (row != null) {
 	if (ingredients != null) {
 		for (int i = 0 ; i < ingredients.size() ; ++i) {
 			String ingredient = ingredients.get(i);
+	
+			while (ingredient.matches("^[0-9.\u00BC-\u00BE\u2150-\u215E].*")) {
 			
-			int c = 0;
+				ingredient = ingredient.replaceAll("^[0-9.\u00BC-\u00BE\u2150-\u215E]+","").trim();
+
+				Measurement measurement = measurementsParser.parse(1,ingredient);
 			
-			while (c < ingredient.length()) {
-				if (Character.isLetter(ingredient.charAt(c))) break;
-				
-				++c;
+				if (measurement != null) {
+					ingredient = ingredient.substring(measurement.getParsedText().length()).trim();
+				}
 			}
-			
-			// doesn't start with a number
-			if (c == 0) continue;
-			
-			// goodness knows
-			if (c == ingredient.length()) continue;
-			
-			ingredient = ingredient.substring(c);
-			
-			ingredients.set(i,ingredient);
 		}
 	}
 	
