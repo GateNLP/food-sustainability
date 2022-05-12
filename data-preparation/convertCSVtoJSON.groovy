@@ -169,7 +169,7 @@ while (row != null) {
 				}
 			}
 			
-			if (!ingredient.equals("") && !ingredient.equals(ingredients.get(i))
+			if (!ingredient.equals("") && !ingredient.equals(ingredients.get(i)))
 				ingredients.set(i,ingredient);
 		}
 	}
