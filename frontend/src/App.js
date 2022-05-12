@@ -58,9 +58,9 @@ function App() {
 
   var overview = useSelector(state => state.overview);
   const query = useSelector(state => state.query);
-  
-  const [analyse, setAnalyse] = React.useState(useSelector(state => state.analyse)); 
-  
+
+  const [analyse, setAnalyse] = React.useState(useSelector(state => state.analyse));
+
   const handleAnalysisChange = (event) => {
     setAnalyse(event.target.value);
   };
@@ -82,7 +82,7 @@ function App() {
     overview = null;
     setValue('1');
     console.log(dashboardQuery.current.value);
-    dispatch(getIndexOverview(dashboardQuery.current.value,analyse));
+    dispatch(getIndexOverview(dashboardQuery.current.value, analyse));
   }
 
   const addToQuery = (restriction) => {
@@ -113,6 +113,8 @@ function App() {
 
         </Grid>
 
+        <Box mt={6} />
+
         {overview === null ?
           <LinearProgress />
           :
@@ -131,6 +133,7 @@ function App() {
                   defaultValue={query || ""}
                   fullWidth
                   variant="outlined"
+                  label="Ingredients"
                   onKeyPress={e => {
                     if (e.key === 'Enter') {
                       update();
@@ -140,13 +143,20 @@ function App() {
               </Grid>
 
               <Grid item>
-                <FormControl>
-                  <InputLabel>Analyse</InputLabel>
-                  <Select variant="outlined" value={analyse} label="Analyse" autoWidth onChange={handleAnalysisChange}>
-                    <MenuItem value={"portion"}>Portions</MenuItem>
-                    <MenuItem value={"recipe"}>Recipes</MenuItem>
-                  </Select>
-                </FormControl> <Button variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
+                {/*
+                  Should really be a select element but it doesn't display properly. work around from
+                  https://github.com/mui/material-ui/issues/17890
+                */}
+                <TextField
+                  label="Analyse"
+                  select
+                  value={analyse}
+                  onChange={handleAnalysisChange}
+                  variant="outlined"
+                  style={{ marginRight: "1em" }}>
+                  <MenuItem value={"portion"}>Portions</MenuItem>
+                  <MenuItem value={"recipe"}>Recipes</MenuItem>
+                </TextField> <Button style={{ verticalAlign: "bottom" }} size="large" variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button style={{ verticalAlign: "bottom" }} size="large" variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
               </Grid>
             </Grid>
             <Box mt={6} />
