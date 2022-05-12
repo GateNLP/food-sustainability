@@ -58,10 +58,18 @@ list, into which we always put `everyone` and then add `vegetarians` or
 ## Ingredients
 
 As well as converting the `ingredientlist` field into an actual list we try
-to normalise the values. Currently we do this by stripping off everything
-before the first letter, which removes amounts. Probably need to do this in
-a slightly better way as it leaves us with strings like `ml milk`, but still
-better than nothing.
+to normalise the values. Firstly we remove any instance of `ingredientlist:`
+that appears within the name of an ingredient (I assume that's a bug in a
+JAPE rule somewhere).
+
+We then srip off any number (including UNICODE fractions) which occur at the
+start of the ingredient. We then look to see if the remaining string starts
+with a unit of measure. If it does then we strip that off. We keep doing this
+in a loop until the string no longer starts with a number, hopefully leaving
+us with just an ingredient name.
+
+We then run a morphological analyser over the last word in the ingredient name
+to remove plurals to further normalise the names.
 
 ## URL
 

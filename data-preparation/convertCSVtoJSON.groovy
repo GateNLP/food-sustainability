@@ -199,7 +199,7 @@ while (row != null) {
 
 	List<String> serves = data.get("serveslist");
 	if (serves != null) {
-		String numbers = serves.get(0).replaceAll("[^0-9]","");
+		String numbers = serves.get(0).replaceAll("[^0-9]","").trim();
 		
 		if (!numbers.equals(""))
 			data.put("serves",Long.valueOf(numbers));
