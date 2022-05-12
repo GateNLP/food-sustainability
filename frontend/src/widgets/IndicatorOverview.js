@@ -19,7 +19,7 @@ const Plot = createPlotlyComponent(Plotly);
 
 const descriptions = {
     "ghge": "Greenhouse Gas Emissions (Kg of CO₂ eq)",
-    "fww": "Fresh Water Withdrawls (L)",
+    "fww": "Fresh Water Withdrawals (L)",
     "landUse": "Land Use (m²)",
     "acid": "Acidifying Emissions (g of SO₂ eq)",
     "swwu": "Stress Weighted Water Use (L)",
