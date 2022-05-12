@@ -168,6 +168,9 @@ while (row != null) {
 					ingredient = ingredient.substring(measurement.getParsedText().length()).trim();
 				}
 			}
+			
+			if (!ingredient.equals("") && !ingredient.equals(ingredients.get(i))
+				ingredients.set(i,ingredient);
 		}
 	}
 	
