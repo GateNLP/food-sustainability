@@ -24,7 +24,7 @@ import { MuiThemeProvider } from "@material-ui/core";
 import { createTheme } from "@material-ui/core/styles";
 
 import { ReactComponent as UoSLogo } from "./images/UoS_Crest.svg"
-import { ReactComponent as CityUoLLogo } from "./images/city-uol-logo.svg"
+import { ReactComponent as CityUoLLogo } from "./images/City-London.svg"
 import { ReactComponent as DashboardLogo } from "./images/Nature.svg"
 
 const theme = createTheme({
@@ -37,7 +37,7 @@ const theme = createTheme({
     },
     secondary: {
       main: '#d2a030',
-      contrastText: '#fff'
+      contrastText: '#fff',
     },
     error: {
       main: 'rgb(198,57,59)'
