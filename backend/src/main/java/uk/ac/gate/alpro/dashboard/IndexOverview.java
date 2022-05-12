@@ -1,4 +1,4 @@
-package uk.ac.gate.alpro.dashboard;
+   package uk.ac.gate.alpro.dashboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class IndexOverview {
 
    @GetMapping("overview")
    public Map overview(@RequestParam(name = "query", defaultValue = "") String query,
-         @RequestParam(name = "portion", defaultValue = "true") boolean portion) throws Exception {
+         @RequestParam(name = "portion", defaultValue = "false") boolean portion) throws Exception {
 
       Map<String, Object> result = new LinkedHashMap<String, Object>();
 

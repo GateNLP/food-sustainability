@@ -4,7 +4,7 @@ export const getIndexOverview = (query, analyse) => {
         payload : {
             overview: null,
             query: query || "",
-            analyse: analyse || "portion"
+            analyse: analyse || "recipe"
         }
     };
 };

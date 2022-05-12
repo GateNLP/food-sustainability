@@ -1,7 +1,7 @@
 const defaultState = {
     overview: null,
     query: null,
-    analyse: "portion"
+    analyse: "recipe"
 };
 
 const reducer = (state = defaultState, action) => {
