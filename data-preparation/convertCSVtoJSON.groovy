@@ -16,8 +16,15 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Grab('uk.ac.gate:gate-core:9.0')
+
 @Grab('uk.ac.gate.plugins:tagger-measurements:8.5')
 import gate.creole.measurements.*;
+
+@Grab('uk.ac.gate.plugins:tools:9.0')
+import gate.creole.morph.*;
+
+morpher = new Interpret();
+morpher.init(Interpret.class.getResource("/resources/morph/default.rul"));
 
 measurementsParser = new MeasurementsParser(
 	MeasurementsParser.class.getResource("/resources/units.dat"),
@@ -169,8 +176,14 @@ while (row != null) {
 				}
 			}
 			
-			if (!ingredient.equals("") && !ingredient.equals(ingredients.get(i)))
-				ingredients.set(i,ingredient);
+			if (!ingredient.equals("")) {
+				String[] words = ingredient.split("\\s+",-1);
+				words[words.length-1] = morpher.runMorpher(words[words.length-1],"*");
+				ingredient = String.join(" ",words);
+				
+				if (!ingredient.equals(ingredients.get(i)))
+					ingredients.set(i,ingredient);
+			}			
 		}
 	}
 	
