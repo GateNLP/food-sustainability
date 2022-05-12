@@ -132,11 +132,14 @@ class RecipeList extends Component {
 
                 {i.ingredientlist ?
                   <Grid item xs={12} style={{ textAlign: "left" }}>
-                    Ingredients: {i.ingredientlist?.join(", ")}
+                    Ingredients: 
+                      {i.ingredientlist.map((ingredient, key) => (
+                        <React.Fragment key={key}>{key !== 0 ? ", ": ""} <Link href="#" onClick={(e) => {e.preventDefault(); this.props.addToQuery(ingredient);}}>{ingredient}</Link></React.Fragment>
+                      ))}
                   </Grid> : null}
 
                 {i.cookingmethodlist ?
-                  <Grid item xs={10} style={{ textAlign: "left" }}>
+                  <Grid item xs={12} style={{ textAlign: "left" }}>
                     Cooking Methods: {i.cookingmethodlist?.join(", ")}
                   </Grid> : null}
 

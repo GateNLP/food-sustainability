@@ -105,7 +105,7 @@ const IndicatorOverview = (props) => {
 
             <Typography variant="body1">Selected recipes sorted by decreasing {descriptions[props.field]}</Typography>
             
-            <RecipeList query={props.query} analyse={props.analyse} indicator={props.field} descriptions={descriptions}/>
+            <RecipeList addToQuery={props.addToQuery} query={props.query} analyse={props.analyse} indicator={props.field} descriptions={descriptions}/>
 
         </React.Fragment>
 

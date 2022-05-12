@@ -54,7 +54,7 @@ public class IndexOverview {
       indicators.put("acid", "totalacidifyingemissions");
       indicators.put("swwu", "totalstressweightedwateruse");
       indicators.put("ee", "totaleutrophyingemissions");
-
+      indicators.put("calories", "totalcalories");
    }
 
    private static RestHighLevelClient ELASTIC_CLIENT;

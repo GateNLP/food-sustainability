@@ -78,10 +78,8 @@ function App() {
   }
 
   const update = () => {
-    console.log("in update");
     overview = null;
     setValue('1');
-    console.log(dashboardQuery.current.value);
     dispatch(getIndexOverview(dashboardQuery.current.value, analyse));
   }
 
@@ -163,7 +161,7 @@ function App() {
 
             <Typography variant="h5">Summarizing {overview.total.toLocaleString()} recipes which match the query.</Typography>
             <Box mt={6} />
-            <IndexOverview addToQuery={addToQuery} />
+            <IndexOverview addToQuery={addToQuery} analyse={analyse}/>
 
             <TabContext value={value}>
               <Grid component={Paper}
@@ -185,12 +183,12 @@ function App() {
                   </TabList>
                 </Grid>
                 <Grid item xs={12}>
-                  <TabPanel value="1"><IndicatorOverview analyse={analyse} query={query} field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
-                  <TabPanel value="2"><IndicatorOverview analyse={analyse} query={query} field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
-                  <TabPanel value="3"><IndicatorOverview analyse={analyse} query={query} field="landUse" description={"Land Use (m²)"} /></TabPanel>
-                  <TabPanel value="4"><IndicatorOverview analyse={analyse} query={query} field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
-                  <TabPanel value="5"><IndicatorOverview analyse={analyse} query={query} field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
-                  <TabPanel value="6"><IndicatorOverview analyse={analyse} query={query} field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
+                  <TabPanel value="1"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="ghge" description={"Greenhouse Gas Emissions (Kg of CO₂ eq)"} /></TabPanel>
+                  <TabPanel value="2"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="fww" description={"Fresh Water Withdrawls (L)"} /></TabPanel>
+                  <TabPanel value="3"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="landUse" description={"Land Use (m²)"} /></TabPanel>
+                  <TabPanel value="4"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="acid" description={"Acidifying Emissions (g of SO₂ eq)"} /></TabPanel>
+                  <TabPanel value="5"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="swwu" description={"Stress Weighted Water Use (L)"} /></TabPanel>
+                  <TabPanel value="6"><IndicatorOverview addToQuery={addToQuery} analyse={analyse} query={query} field="ee" description={"Eutrophying Emissions (g PO₄³⁻ eq)"} /></TabPanel>
                 </Grid>
               </Grid>
             </TabContext>

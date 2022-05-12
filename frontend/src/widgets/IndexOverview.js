@@ -81,6 +81,36 @@ const IndexOverview = (props) => {
     const vegetariansMethodsCloud = makeCloud(overview.methods.vegetarians);
     const vegansMethodsCloud = makeCloud(overview.methods.vegans);
 
+    const caloriesSources = {
+        marker: {
+            color: "#3a7b8d",
+        },
+        type: "bar",
+        orientation: 'h',
+        y: Array.from(Object.keys(overview.calories_sources)).reverse(),
+        x: Array.from(Object.values(overview.calories_sources)).reverse(),
+    };
+
+    const caloriesSuitableFor = {
+        marker: {
+            color: "#3a7b8d",
+        },
+        type: "bar",
+        orientation: 'h',
+        y: Array.from(Object.keys(overview.calories_suitable_for)).reverse(),
+        x: Array.from(Object.values(overview.calories_suitable_for)).reverse()
+    };
+
+    const layout = {
+        margin: { t: 10, b: 50, l: 200 },
+        autosize: true,
+        height: 450,
+        xaxis: {
+            fixedrange: true,
+            title: "Calories (J)"
+        },
+        yaxis: { fixedrange: true }
+    };
 
     function getCallback(callback, clickable) {
         return function (word, event) {
@@ -99,15 +129,15 @@ const IndexOverview = (props) => {
     }
 
     const callbacks = {
-        onWordClick: getCallback("onWordClick",true),
-        onWordMouseOut: getCallback("onWordMouseOut",true),
-        onWordMouseOver: getCallback("onWordMouseOver",true)
+        onWordClick: getCallback("onWordClick", true),
+        onWordMouseOut: getCallback("onWordMouseOut", true),
+        onWordMouseOver: getCallback("onWordMouseOver", true)
     }
 
     const methodCallbacks = {
-        onWordClick: getCallback("onWordClick",false),
-        onWordMouseOut: getCallback("onWordMouseOut",false),
-        onWordMouseOver: getCallback("onWordMouseOver",false)
+        onWordClick: getCallback("onWordClick", false),
+        onWordMouseOut: getCallback("onWordMouseOut", false),
+        onWordMouseOver: getCallback("onWordMouseOver", false)
     }
 
     return (
@@ -138,6 +168,41 @@ const IndexOverview = (props) => {
                     <Plot divId="suitable-for" style={{ width: "100%" }} data={[suitableFor]} layout={{ margin: { t: 10, b: 20, l: 5, r: 5 }, autosize: true }} config={{ responsive: true, 'displayModeBar': false, showEditInChartStudio: true, plotlyServerURL: "https://chart-studio.plotly.com" }} />
                 </Grid>
 
+            </Grid>
+
+            <Box mt={6} />
+
+            <Grid
+                container
+                direction="row"
+                spacing={3}
+                alignItems="flex-start">
+
+                <Grid item xs={12}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        Median Calories per {props.analyse}
+                    </Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        per Source
+                        <SVGDownload id="bySource" filename={props.field + "_by_source.svg"} />
+                        <SVGDownload id="bySource" type="PNG" filename={props.field + "_by_source.png"} />
+                        <CSVDownload filename={props.field + "_by_source"} method={convertObjToCsv(overview.calories_sources, ["source", props.description])} />
+                    </Typography>
+                    <Plot divId="bySource" style={{ width: "100%" }} data={[caloriesSources]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
+                </Grid>
+
+                <Grid item xs={6}>
+                    <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
+                        per Diet
+                        <SVGDownload id="byDiet" filename={props.field + "_by_diet.svg"} />
+                        <SVGDownload id="byDiet" type="PNG" filename={props.field + "_by_diet.png"} />
+                        <CSVDownload filename={props.field + "_by_diet"} method={convertObjToCsv(overview.calories_suitable_for, ["diet", props.description])} />
+                    </Typography>
+                    <Plot divId="byDiet" style={{ width: "100%" }} data={[caloriesSuitableFor]} layout={layout} config={{ responsive: true, 'displayModeBar': false }} />
+                </Grid>
             </Grid>
 
             <Box mt={6} />
