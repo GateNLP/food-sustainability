@@ -1965,6 +1965,9 @@ sulphur                 sulfur
 # Cooking measures
 #
 
+pinch                   0.35 g
+prise                   pinch
+
 # Common abbreviations
 
 tbl                     tablespoon
