@@ -27,7 +27,7 @@ morpher = new Interpret();
 morpher.init(Interpret.class.getResource("/resources/morph/default.rul"));
 
 measurementsParser = new MeasurementsParser(
-	MeasurementsParser.class.getResource("/resources/units.dat"),
+	(new File("units.dat")).toURI().toURL(),
 	MeasurementsParser.class.getResource("/resources/common_words.txt"));
 
 objectMapper = new ObjectMapper();
@@ -163,34 +163,27 @@ while (row != null) {
 		for (int i = 0 ; i < ingredients.size() ; ++i) {
 			String ingredient = ingredients.get(i);
 			
-			System.err.println("\n1: "+ingredient);
-			
 			ingredient = ingredient.replaceAll("ingredientlist:","").trim();
 	
 			while (ingredient.matches("^[0-9./\u00BC-\u00BE\u2150-\u215E].*")) {
 
 				ingredient = ingredient.replaceAll("^[0-9./\u00BC-\u00BE\u2150-\u215E]+","").trim();
-				System.err.println("2: "+ingredient);
 
 				ingredient = ingredient.replaceAll("/+","/");
-				System.err.println("3: "+ingredient);
 
 				Measurement measurement = measurementsParser.parse(1,ingredient);
-				System.err.println("4: "+measurement);
+
 				if (measurement != null) {
-					System.err.println("4b"+measurement.getParsedText());
 					ingredient = ingredient.substring(measurement.getParsedText().length()).trim();
 				}
-							System.err.println("5: "+ingredient);
+
 			}
 			
 			if (!ingredient.equals("")) {
 				String[] words = ingredient.split("\\s+",-1);
 				words[words.length-1] = morpher.runMorpher(words[words.length-1],"*");
 				ingredient = String.join(" ",words);
-				System.err.println("6: "+ingredient);
 				if (!ingredient.equals(ingredients.get(i))) {
-					System.err.println("updated");
 					ingredients.set(i,ingredient);
 				}
 			}			
