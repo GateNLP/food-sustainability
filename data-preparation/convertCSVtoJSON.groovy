@@ -188,9 +188,10 @@ while (row != null) {
 				if (!words[words.length-1].equals("clove")) {
 					words[words.length-1] = morpher.runMorpher(words[words.length-1],"*");
 					ingredient = String.join(" ",words);
-					if (!ingredient.equals(ingredients.get(i))) {
+				}
+				
+				if (!ingredient.equals(ingredients.get(i))) {
 						ingredients.set(i,ingredient);
-					}
 				}
 			}			
 		}
