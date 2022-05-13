@@ -2,7 +2,6 @@ import Link from "@material-ui/core/Link";
 
 import DownloadIcon from "@material-ui/icons/SaveAlt";
 import React from "react";
-import {useSelector} from "react-redux";
 
 const CSVDownload = ({method, filename}) => {
 
@@ -82,7 +81,7 @@ export const convertTimeHistogramToCsv = (data, sbinx, headings) => {
     let sbinx_range = [...Array(sbinx).keys()]
 
     sbinx_range.forEach(bin=>{
-        final_str = final_str + bin + "," + data.filter(k=>k==bin).length + "\n"
+        final_str = final_str + bin + "," + data.filter(k=>k===bin).length + "\n"
     })
 
     return headings + final_str

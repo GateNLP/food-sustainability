@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 
 import Paper from '@material-ui/core/Paper';
 
-import { Box, Tab, Button, TextField, Select, MenuItem, FormControl, InputLabel } from "@material-ui/core";
+import { Box, Tab, Button, TextField, MenuItem } from "@material-ui/core";
 import { TabContext, TabList, TabPanel } from "@material-ui/lab";
 
 import { getIndexOverview } from "./actions";
@@ -131,7 +131,7 @@ function App() {
                   defaultValue={query || ""}
                   fullWidth
                   variant="outlined"
-                  label="Ingredients"
+                  label="Using These Ingredients"
                   onKeyPress={e => {
                     if (e.key === 'Enter') {
                       update();

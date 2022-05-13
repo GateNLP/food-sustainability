@@ -3,7 +3,6 @@ import SaveSVGIcon from '@material-ui/icons/Image';
 import { select } from "d3-selection";
 
 import Link from "@material-ui/core/Link";
-import {useSelector} from "react-redux";
 
 const SVGDownload = ({ id, filename, fill, type }) => {
 
@@ -42,7 +41,7 @@ const SVGDownload = ({ id, filename, fill, type }) => {
             }
             
             // it needs a namespace
-            if (!svgText.match(/xmlns=\"/mi)){
+            if (!svgText.match(/xmlns="/mi)){
               svgText = svgText.replace ('<svg ','<svg xmlns="http://www.w3.org/2000/svg" ') ;  
             }
             

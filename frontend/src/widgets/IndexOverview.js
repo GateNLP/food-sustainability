@@ -50,11 +50,11 @@ const IndexOverview = (props) => {
         type: "sunburst",
         hoverinfo: "label+value+percent parent+percent root",
         hovertemplate: [
-            "%{value} %{label} recipes",
+            "%{value} recipes for %{label}<br>All recipes are suitable for %{label}",
 
-            "%{value} %{label} recipes<br>%{percentParent:.2%} of %{parent} recipes are also suitable for %{label}",
+            "%{value} recipes for %{label}<br>%{percentParent:.2%} of recipes for %{root} are also suitable for %{label}",
 
-            `%{value} %{label} recipes<br>%{percentParent:.2%} of %{parent} recipes are also suitable for %{label}<br>%{percentRoot:.2%} of recipes suitable for %{root} are also suitable for %{label}`
+            `%{value} recipes for %{label}<br>%{percentParent:.2%} of recipes for %{parent} are also suitable for %{label}<br>%{percentRoot:.2%} of recipes for %{root} are also suitable for %{label}`
         ],
         ids: overview.suitable_for.ids,
         labels: overview.suitable_for.labels,

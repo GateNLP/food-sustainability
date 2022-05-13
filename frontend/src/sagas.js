@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, select, call, put } from 'redux-saga/effects';
+import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 
 import { setIndexOverview } from "./actions";
 
