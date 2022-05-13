@@ -153,7 +153,6 @@ while (row != null) {
 		}
 	}
 
-
 	// some of the items in the ingredients lists contain an amout
 	// as a first cut we just remove any none letters from the start
 	// of an ingredient. Can we use the measurement parser to do
@@ -181,10 +180,17 @@ while (row != null) {
 			
 			if (!ingredient.equals("")) {
 				String[] words = ingredient.split("\\s+",-1);
-				words[words.length-1] = morpher.runMorpher(words[words.length-1],"*");
-				ingredient = String.join(" ",words);
-				if (!ingredient.equals(ingredients.get(i))) {
-					ingredients.set(i,ingredient);
+
+				if (words[words.length-1].equals("cloves")) {
+					words[words.length-1] = "clove";
+				}
+
+				if (!words[words.length-1].equals("clove")) {
+					words[words.length-1] = morpher.runMorpher(words[words.length-1],"*");
+					ingredient = String.join(" ",words);
+					if (!ingredient.equals(ingredients.get(i))) {
+						ingredients.set(i,ingredient);
+					}
 				}
 			}			
 		}
