@@ -152,8 +152,8 @@ function App() {
                   onChange={handleAnalysisChange}
                   variant="outlined"
                   style={{ marginRight: "1em" }}>
-                  <MenuItem value={"portion"}>Portions</MenuItem>
-                  <MenuItem value={"recipe"}>Recipes</MenuItem>
+                  <MenuItem value={"portion"}>per Portion</MenuItem>
+                  <MenuItem value={"recipe"}>per Recipe</MenuItem>
                 </TextField> <Button style={{ verticalAlign: "bottom" }} size="large" variant="contained" color="primary" onClick={() => update()}>Update</Button> <Button style={{ verticalAlign: "bottom" }} size="large" variant="contained" color="secondary" onClick={() => reset()}>Reset</Button>
               </Grid>
             </Grid>
