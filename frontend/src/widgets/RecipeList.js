@@ -121,7 +121,7 @@ class RecipeList extends Component {
   render() {
     return (
       <React.Fragment>
-        Show Recipes Labelled: <FormControlLabel control={<Checkbox onChange={this.handleOmnivores} checked={this.state.showOmnivores} />} label="Omnivores" />
+        Show Recipes Suitable For: <FormControlLabel control={<Checkbox onChange={this.handleOmnivores} checked={this.state.showOmnivores} />} label="Omnivores" />
         <FormControlLabel control={<Checkbox onChange={this.handleVegetarian} checked={this.state.showVegetarian} />} label="Vegetarians" />
         <FormControlLabel control={<Checkbox onChange={this.handleVegan} checked={this.state.showVegan} />} label="Vegans" />
 
