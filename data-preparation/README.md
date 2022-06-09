@@ -3,8 +3,16 @@
 To push a document into Elasticsearch it needs to be a JSON document rather
 than a row in a TSV file. We could have done a simple conversion using the 
 column header as a key, but this would have made it very difficult to
-analyse some of the values (especially via aggregations). So we've modified
-the data as follows
+analyse some of the values (especially via aggregations). So we've
+written a script that converts the TSV to JSON and modifies the data.
+
+You can run this script using the command
+
+```
+groovy convertTSVtoJSON.groovy <input TSV file> > <output JSON file>
+```
+
+The data is modified as follows:
 
 ## Values
 
@@ -91,5 +99,3 @@ knows how the per portion fields are calculated.
 For fields where we manipulate the original value in some way, we also store
 the original in the field `<header>_raw`. And for those fields we don't need
 to modify they just end up as `<header>`.
-
-## Other things we should do
