@@ -1,9 +1,3 @@
-#Notes
-
-1. The CSV (actually a TSV) provided didn't seem to be well valid somewhere
-after about 32,000 lines. I re-exported the XLS version to a valid TSV.
-
-
 # Conversion to JSON
 
 To push a document into Elasticsearch it needs to be a JSON document rather
