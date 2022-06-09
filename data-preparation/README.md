@@ -99,3 +99,21 @@ knows how the per portion fields are calculated.
 For fields where we manipulate the original value in some way, we also store
 the original in the field `<header>_raw`. And for those fields we don't need
 to modify they just end up as `<header>`.
+
+# Building the Index
+
+Once you have a file containing the recipes in JSON format we build the index
+using the following command `BuildIndex.groovy`. The usage of which is as follows
+
+```
+usage: BuildIndex.groovy -e endpoint -p portnr -m mappingfile -i indexname
+                         -f infile [-h]
+ -e <arg>   ES endpoint URL (no default, required)
+ -f <arg>   Input JSON file (no default, required)
+ -h         Show usage information
+ -i <arg>   Index name (no default, required)
+ -m <arg>   Index mapping file (no default, required)
+ -p <arg>   Port number (no default, required)
+```
+
+The mapping file is provided as `index-mapping.json`.
