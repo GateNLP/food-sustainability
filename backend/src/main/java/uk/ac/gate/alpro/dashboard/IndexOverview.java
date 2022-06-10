@@ -275,7 +275,7 @@ public class IndexOverview {
                QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
 
-      
+      // sort the recipes by the relevant indicator field
       FieldSortBuilder sortByIndicator = new FieldSortBuilder(indicators.get(indicator) + (portion ? "/portion" : ""))
             .order(SortOrder.DESC);
 
@@ -319,7 +319,6 @@ public class IndexOverview {
 
       for (SearchHit hit : hits) {
          Map<String, Object> sourceMap = hit.getSourceAsMap();
-         // tweet.put("sort", hit.getSortValues());
          data.add(sourceMap);
       }
 
