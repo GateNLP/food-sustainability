@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 
-import { setIndexOverview } from "./actions";
+import { setIndexOverview, setFailure } from "./actions";
 
 import API from "./api";
 
@@ -11,11 +11,16 @@ function* watchInputURL() {
     yield takeLatest(["GET_INDEX_OVERVIEW"], handleGetIndexOverview)
 }
 
-
 function* handleGetIndexOverview(action) {
-    let overview = yield call(api.getOverview, action.payload.query, action.payload.analyse);
+    try {
+        let overview = yield call(api.getOverview, action.payload.query, action.payload.analyse);
 
-    yield put(setIndexOverview(overview));
+        yield put(setIndexOverview(overview));
+    }
+    catch (error) {
+        console.log(error);
+        yield put(setFailure(true));
+    }
 
 }
 

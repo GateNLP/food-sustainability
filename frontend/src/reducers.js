@@ -1,7 +1,8 @@
 const defaultState = {
     overview: null,
     query: null,
-    analyse: "recipe"
+    analyse: "recipe",
+    failed: false
 };
 
 const reducer = (state = defaultState, action) => {
@@ -9,9 +10,11 @@ const reducer = (state = defaultState, action) => {
 
         case 'GET_INDEX_OVERVIEW':
             state = {
-                overview: null
+                overview: null,
+                failed: false
             };
         case 'SET_INDEX_OVERVIEW':
+        case 'SET_FAILURE':
             return Object.assign({}, state, action.payload);
         default:
             return state;

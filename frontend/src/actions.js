@@ -17,3 +17,12 @@ export const setIndexOverview = (overview) => {
         }
     };
 }
+
+export const setFailure = (failure) => {
+    return{
+        type : "SET_FAILURE",
+        payload : {
+            failure : failure,
+        }
+    };
+}

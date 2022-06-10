@@ -27,6 +27,8 @@ import { ReactComponent as UoSLogo } from "./images/UoS_Crest.svg"
 import { ReactComponent as CityUoLLogo } from "./images/City-London.svg"
 import { ReactComponent as DashboardLogo } from "./images/Nature.svg"
 
+import Alert from '@material-ui/lab/Alert';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -56,8 +58,10 @@ function App() {
 
   const dispatch = useDispatch();
 
+  
   var overview = useSelector(state => state.overview);
   const query = useSelector(state => state.query);
+  const failure = useSelector(state => state.failure);
 
   const [analyse, setAnalyse] = React.useState(useSelector(state => state.analyse));
 
@@ -113,7 +117,11 @@ function App() {
 
         <Box mt={6} />
 
-        {overview === null ?
+        {failure ?
+          <Alert severity="error">Unfortunately an error occured retrieving the analysed recipes. Please try again later.</Alert>
+        : 
+
+        overview === null ?
           <LinearProgress />
           :
           <React.Fragment>
