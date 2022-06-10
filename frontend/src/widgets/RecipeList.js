@@ -49,7 +49,8 @@ class RecipeList extends Component {
 
     let url = endpoint + "/recipes?"
       + "query=" + encodeURIComponent(this.props.query || "")
-      + "&indicator=" + this.props.indicator;
+      + "&indicator=" + this.props.indicator
+      + "&portion="+ (this.props.analyse === "portion");
 
     axios.get(url)
       .then((response) => {

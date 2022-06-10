@@ -1,4 +1,4 @@
-   package uk.ac.gate.alpro.dashboard;
+package uk.ac.gate.alpro.dashboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ public class IndexOverview {
    static {
       indicators = new LinkedHashMap<String, String>();
 
+      // this is a map from sensible short keys to the long versions used in the index
       indicators.put("ghge", "totalghge");
       indicators.put("fww", "totalfreshwaterwithdrawals");
       indicators.put("landUse", "totallanduse");
@@ -85,6 +86,8 @@ public class IndexOverview {
 
       sourceBuilder.trackTotalHits(true);
 
+      // if the user wants to restrict by ingredients then convert that into a query
+      // to restrict the documents we will run aggregations over
       if (query.equals("")) {
          sourceBuilder.query(QueryBuilders.matchAllQuery());
       } else {
@@ -92,10 +95,15 @@ public class IndexOverview {
                QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
 
+      // build an aggregation for the sources
       sourceBuilder.aggregation(AggregationBuilders.terms("sources").field("source.keyword"));
 
+      // build an aggregation for the suitable for diet type field
       sourceBuilder.aggregation(AggregationBuilders.terms("suitableFor").field("suitable_for.keyword"));
 
+      // for each of the indicators build two aggregations to calculate the median
+      // value when broken down by either source of diet type. Also take into account
+      // if we are doing this per recipe or portion
       for (Map.Entry indicator : indicators.entrySet()) {
          sourceBuilder.aggregation(AggregationBuilders.terms(indicator.getKey() + "_source").field("source.keyword")
                .order(BucketOrder.aggregation("median", "50", false)).subAggregation(AggregationBuilders
@@ -107,24 +115,32 @@ public class IndexOverview {
                      .field(indicator.getValue() + (portion ? "/portion" : "")).percentiles(50)));
       }
 
+      // get the top 50 ingredients for the different diet types
       sourceBuilder.aggregation(AggregationBuilders.terms("ingredients").field("suitable_for.keyword")
             .subAggregation(AggregationBuilders.terms("suitable_for").field("ingredientlist.keyword").size(50)));
-      
+
+      // get the top 50 cooking methods for the different diet types
       sourceBuilder.aggregation(AggregationBuilders.terms("method").field("suitable_for.keyword")
             .subAggregation(AggregationBuilders.terms("suitable_for").field("cookingmethodlist.keyword").size(50)));
-      
 
+      // after all that we can actual buld the request
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
       searchRequest.source(sourceBuilder);
 
       // do the actual search
       SearchResponse searchResponse = ELASTIC_CLIENT.search(searchRequest, RequestOptions.DEFAULT);
 
+      // extract the total number of recipes as the total number of hits
       result.put("total", searchResponse.getHits().getTotalHits().value);
+
+      // convert the sources aggregation into a map
       result.put("sources", aggregationToMap(searchResponse.getAggregations().get("sources")));
+
+      // convert the diet based aggregation into the data for the sunburst
       result.put("suitable_for",
             buildSuitableForData(aggregationToMap(searchResponse.getAggregations().get("suitableFor"))));
 
+      // for each indicator get the median values for both source and diet
       for (String indicator : indicators.keySet()) {
          result.put(indicator + "_sources",
                medianAggregationToMap(searchResponse.getAggregations().get(indicator + "_source")));
@@ -136,15 +152,18 @@ public class IndexOverview {
       Map<String, Map<String, Long>> ingredients = new LinkedHashMap<String, Map<String, Long>>();
       Map<String, Map<String, Long>> methods = new LinkedHashMap<String, Map<String, Long>>();
 
+      // for each diet type....
       for (String diet : new String[] { "omnivores", "vegetarians", "vegans" }) {
+
+         // get the ingredients for this diet and convert to a map
          Terms.Bucket bucket = ((ParsedTerms) searchResponse.getAggregations().get("ingredients")).getBucketByKey(diet);
 
          if (bucket != null)
             ingredients.put(diet, aggregationToMap(bucket.getAggregations().get("suitable_for")));
          else
             ingredients.put(diet, new HashMap());
-         
 
+         // get the cooking methods for this diet and convert to a map
          bucket = ((ParsedTerms) searchResponse.getAggregations().get("method")).getBucketByKey(diet);
 
          if (bucket != null)
@@ -231,7 +250,8 @@ public class IndexOverview {
 
    @GetMapping("/recipes")
    public Map<String, Object> recipes(@RequestParam(value = "query", defaultValue = "") String query,
-         @RequestParam(value = "indicator", defaultValue = "ghge") String indicator) throws Exception {
+         @RequestParam(value = "indicator", defaultValue = "ghge") String indicator,
+         @RequestParam(name = "portion", defaultValue = "false") boolean portion) throws Exception {
 
       // this is where we assemble information about what we are interested in
       SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -241,23 +261,24 @@ public class IndexOverview {
       // something new)
       sourceBuilder.trackTotalHits(true);
 
-      // we don't need the document sources at this point as all we are doing
-      // is collecting statistics
+      // we need the document sources so we can extract the relevant info
       sourceBuilder.fetchSource(true);
 
-      // in fact we don't even care which documents we matched, so don't bother
-      // returning any of them
+      // let's get 10 at a time and use a scroll if we want more than that
       sourceBuilder.size(10);
 
+      // if there is an ingredients restriction in place then use it as the query
       if (query.equals("")) {
          sourceBuilder.query(QueryBuilders.matchAllQuery());
       } else {
          sourceBuilder.query(
                QueryBuilders.queryStringQuery(query).defaultField("ingredientlist").defaultOperator(Operator.AND));
       }
+
       
-      FieldSortBuilder sortByIndicator = new FieldSortBuilder(indicators.get(indicator)+"/portion").order(SortOrder.DESC);
-      
+      FieldSortBuilder sortByIndicator = new FieldSortBuilder(indicators.get(indicator) + (portion ? "/portion" : ""))
+            .order(SortOrder.DESC);
+
       sourceBuilder.sort(sortByIndicator);
 
       SearchRequest searchRequest = new SearchRequest(ELASTIC_INDEX);
