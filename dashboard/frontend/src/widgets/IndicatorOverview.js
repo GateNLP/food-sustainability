@@ -26,6 +26,15 @@ const descriptions = {
     "ee": "Eutrophying Emissions (g PO₄³⁻ eq)"
 }
 
+const faq = {
+    "ghge": "This is a measure of what Greenhouse Gasses (GHGs) that are emitted when creating the product. We add up all the GHGs released from the farm through to and including the supermarket shelf using grams of carbon dioxide equivalent, or Kg of CO₂ eq using IPCC (2013) characterization factors with climate-carbon feedbacks.",
+    "fww": "This is a measure of water scarcity. We calculate how much freshwater is used from the field, to during processing and even water used to clean the processing machine. We look at where it is drawn out of the ground, then multiply it by a number based on how scarce freshwater is at that location.",
+    "landUse": "We look at the land used to grow the produce, or rear the animals, and provide an estimate for the amount of land used in this production. ",
+    "acid": "This is a measure of what Acidifying Emissions that are emitted when creating the product. Atmospheric emissions of acidifying substances such as sulphur dioxide (SO₂) and nitrogen oxides (NOₓ), can persist in the air for up to a few days and thus can be transported over thousands of kilometres, when they undergo chemical conversion into acids (sulphuric and nitric). The primary pollutants sulphur dioxide, nitrogen dioxide and ammonia (NH₃), together with their reaction products, lead after their deposition to changes in the chemical composition of the soil and surface water. Since the 1970s acidification has been widely recognised as a major threat to the environment.",
+    "swwu": "This is a measure that calculates how much water is used in the production of the food. However, this value is weighted by the amount of water 'stress'. Water stress is defined based on the ratio of freshwater withdrawals to renewable freshwater resources. Water stress does not insinuate that a country has water shortages, but does give an indication of how close it maybe be to exceeding a water basin’s renewable resources.",
+    "ee": "This is a measure of what Eutrophying Emissions that are emitted when creating the product. Eutrophication happens when fertiliser or slurry runs off the fields into lakes & rivers, feeding algae which runs wild, robbing those below the surface of oxygen and sunlight. We look at whatever 'eutrophic' substances could be released into the waterways, adding them up using an equivalent measure as there are many types of eutrophic substances."
+}
+
 const IndicatorOverview = (props) => {
 
     const overview = useSelector(state => state.overview);
@@ -77,6 +86,8 @@ const IndicatorOverview = (props) => {
                     <Typography variant={"h6"} style={{ paddingBottom: 3 }}>
                         Median {descriptions[props.field]} per {props.analyse}
                     </Typography>
+
+                    <Typography variant={"body1"} paragraph>{faq[props.field]}</Typography>
                 </Grid>
 
                 <Grid item xs={6}>
