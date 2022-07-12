@@ -87,7 +87,7 @@ class RecipeList extends Component {
 
     if (!this.state.showVegetarian && !i.suitable_for.includes("vegans") && i.suitable_for.includes("vegetarians")) return "none";
 
-    if (!this.state.showOmnivores && i.suitable_for.length == 1) return "none";
+    if (!this.state.showOmnivores && i.suitable_for.length === 1) return "none";
 
     return "block";
   }
