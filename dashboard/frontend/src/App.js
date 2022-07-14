@@ -27,6 +27,11 @@ import { ReactComponent as UoSLogo } from "./images/UoS_Crest.svg"
 import { ReactComponent as CityUoLLogo } from "./images/City-London.svg"
 import { ReactComponent as DashboardLogo } from "./images/Nature.svg"
 
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Alert from '@material-ui/lab/Alert';
 
 const theme = createTheme({
@@ -121,13 +126,24 @@ function App() {
           container
           direction="row"
           alignItems="center">
-          <Typography variant={"body1"} paragraph>The data presented in this dashboard is sourced from <Link href="https://science.sciencemag.org/content/360/6392/987" targte="_blank">the work of Joseph
-            Poore and Thomas Nemecek</Link> and are the global mean values across 38,700 commercially viable farms, from 119 countries. There can be large differences in the impacts of the same products
-            from different producers. This can be the result of specific production methods, or simply regional differences in terms of the efficiency of production. For this reason we show the mean
-            values along with the 5th and 95th percentiles of producing this recipe at a global level.  What we find is that there can be a large difference between the 'best' and 'worst' versions of a
-            recipe. This means there is an opportunity to reduce the impacts of recipes by optimizing for the lowest-impact producers. However, what is also clear is that this does not change the ordering
-            of the impacts of different foods in recipes - e.g. animal food based recipes have a higher carbon footprint than plant-based alternatives, even if we opt for the lowest-impact producers.
-            Unfortunately, data is not available to present this breakdown by country or region.</Typography>
+         
+          <Accordion elevation={0}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant={"body1"}>This dashboard provides ways to explore the economic, health and environmental impacts of a database of
+                recipes collected from 4 websites: BBC Good Food, Albert Heijn/Allerhande, AllRecipes.com and Kochbar.</Typography>
+
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant={"body1"} paragraph>The data presented in this dashboard is sourced from <Link href="https://science.sciencemag.org/content/360/6392/987" targte="_blank">the work of Joseph
+                Poore and Thomas Nemecek</Link> and are the global mean values across 38,700 commercially viable farms, from 119 countries. There can be large differences in the impacts of the same products
+                from different producers. This can be the result of specific production methods, or simply regional differences in terms of the efficiency of production. For this reason we show the mean
+                values along with the 5th and 95th percentiles of producing this recipe at a global level.  What we find is that there can be a large difference between the 'best' and 'worst' versions of a
+                recipe. This means there is an opportunity to reduce the impacts of recipes by optimizing for the lowest-impact producers. However, what is also clear is that this does not change the ordering
+                of the impacts of different foods in recipes - e.g. animal food based recipes have a higher carbon footprint than plant-based alternatives, even if we opt for the lowest-impact producers.
+                Unfortunately, data is not available to present this breakdown by country or region.</Typography>
+            </AccordionDetails>
+          </Accordion>
+
         </Grid>
 
         <Box mt={6} />
