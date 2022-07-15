@@ -30,7 +30,6 @@ import { ReactComponent as DashboardLogo } from "./images/Nature.svg"
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Alert from '@material-ui/lab/Alert';
 
@@ -128,7 +127,7 @@ function App() {
           alignItems="center">
          
           <Accordion elevation={0}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<div style={{fontSize:"150%", verticalAlign:"bottom"}}>⮋</div>}>
               <Typography variant={"body1"}>This dashboard provides ways to explore the economic, health and environmental impacts of a database of
                 recipes collected from 4 websites: BBC Good Food, Albert Heijn/Allerhande, AllRecipes.com and Kochbar.</Typography>
 
